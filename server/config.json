@@ -1,0 +1,14 @@
+{
+    "cloud": {
+        "connectionUrl": "mongodb://localhost:27017/undefined",
+        "connectionType": "default"
+    },
+    "api": {
+        "baseUrl": "/api",
+        "port": 5000
+    },
+    "nodemailer": {
+        "user": "",
+        "pass": ""
+    }
+}
