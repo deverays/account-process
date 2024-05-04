@@ -9,7 +9,6 @@ import * as config from "../config.json";
 
 const server = new Server(config.api);
 
-//mongodb+srv://cluster:B100dy50@e-s.j5kucze.mongodb.net/
 const cloud = new Cloud({
     connectionUrl: config.cloud.connectionUrl,
     connectionType: config.cloud.connectionType as any,
