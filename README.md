@@ -1,5 +1,5 @@
 # __Backend + Frontend__
-- Vue, Tsx, Ts, Express, Mongoose
+- Vue, Tsx, Ts, Express, Mongoose, Tailwindcss
 
 # Login
 ![image](https://github.com/deverays/account-process/assets/129968185/3b24d79a-efca-46ee-9fc2-23673786d249)
