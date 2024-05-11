@@ -1,0 +1,76 @@
+{
+    "Dropdown": {
+        "ProfileDropdown": {
+            "Title": {
+                "settings": "Settings",
+                "payment": "Payment",
+                "server": "Server"
+            },
+            "Button": {
+                "login": "Login",
+                "logout": "logout",
+                "billing": "Billing",
+                "theme": "Theme Change",
+                "language": "language",
+                "support": "Support Server"
+            }
+        }
+    },
+    "Form": {
+        "LoginForm": {
+            "title": "Login",
+            "Button": {
+                "signup": "Don't have an account? Sign Up",
+                "recovery": "Can't log in?",
+                "login": "Sign In"
+            },
+            "Input": {
+                "username": "Username",
+                "password": "Password"
+            }
+        },
+        "ForgotPasswordForm": {
+            "title": "Password Reset",
+            "message": "I Successfully Sent the Password Reset Request to Email",
+            "Button": {
+                "login": "Do you remember your password? Sign In",
+                "reset": "Reset"
+            },
+            "Input": {
+                "username": "Your Username"
+            }
+        },
+        "PasswordResetForm": {
+            "title": "Password Reset",
+            "message": "Your password reset code is incorrect, try getting your password reset code again.",
+            "Button": {
+                "login": "Do you remember your password? Sign In",
+                "reset": "Reset"
+            },
+            "Input": {
+                "password": "New Password",
+                "passwordAgain": "Confirm Your New Password"
+            }
+        },
+        "SignupForm": {
+            "title": "Sign Up",
+            "Button": {
+                "login": "Do you have an account? Sign in",
+                "signup": "Sign Up"
+            },
+            "Input": {
+                "username": "Set Username",
+                "password": "Set Your Password",
+                "passwordAgain": "Verify the Password You Specified"
+            }
+        },
+        "ForgotUsernameForm": {
+            "title": "Username",
+            "message": "I successfully sent the username to the email address",
+            "Button": {
+                "login": "Do you remember the user's name? Log in",
+                "send": "Send"
+            }
+        }
+    }
+}
