@@ -1,9 +1,13 @@
-import { getReq } from "../utils/axiosReqs";
+import { getReq, postReq } from "../utils/axiosReqs";
 import { useRouter } from "vue-router";
 
-interface UserData {
+type UserData = {
     access_token?: string;
-}
+};
+
+const ActionTypes = {
+    SAVE_GUILD_STATE: "saveGuildState",
+};
 
 export default {
     async initUser() {
@@ -16,7 +20,7 @@ export default {
             return;
         }
 
-        (this as any).isLoading = true;
+        (this as any)._isLoading = true;
 
         const getUser = async () => {
             return await getReq("/user");
@@ -25,11 +29,44 @@ export default {
         try {
             const response = await this.makeRequest(getUser);
             if (response.data.success) {
+                (this as any).getters._getUser = response.data;
                 (this as any)._isLogin = true;
-                (this as any).getters._getUser = response.data.user_data;
             }
         } finally {
             (this as any)._isLoading = false;
+        }
+    },
+
+    async initGuild() {
+        const userData: UserData = JSON.parse(
+            localStorage.getItem("user_data") ?? "{}"
+        );
+
+        if (!userData.access_token) {
+            return false;
+        }
+
+        const getGuilds = async () => {
+            return await getReq("/guilds");
+        };
+
+        const response = await this.makeRequest(getGuilds);
+        if (response.data.success) {
+            (this as any).getters._getGuilds = response.data;
+        }
+
+        return response;
+    },
+
+    async dispatch(
+        actionType: keyof typeof ActionTypes,
+        { guild_id, data }: { guild_id?: string; data: object }
+    ) {
+        switch (actionType) {
+            case ActionTypes.SAVE_GUILD_STATE:
+                return await postReq(`/guilds/${guild_id}`, data);
+            default:
+                throw new Error(`Unknown action type: ${actionType as string}`);
         }
     },
 
@@ -40,18 +77,14 @@ export default {
         } catch (err: any) {
             await this.handleRateLimit(err, () => this.makeRequest(requestFunc));
             if (err?.response?.status === 401) {
-                console.log(err.response.data)
-                //this.handleUnauthorized();
+                console.log(err.response.data);
+                this.handleUnauthorized();
             }
             throw err;
         }
     },
 
-    async handleRateLimit(
-        this: any,
-        err: any,
-        retryCallback: () => Promise<any>
-    ) {
+    handleRateLimit(err: any, retryCallback: () => Promise<any>) {
         if (err?.response?.data?.message === "You are being rate limited.") {
             const retryAfter = err.response.data.retry_after || 1;
             setTimeout(retryCallback, retryAfter * 1300);
