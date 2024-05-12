@@ -1,0 +1,12 @@
+{
+    "database": {
+        "url": "mongodb://localhost:27017/test"
+    },
+    "server": {
+        "port": 5000
+    },
+    "nodemailer": {
+        "user": "",
+        "pass": ""
+    }
+}
