@@ -5,57 +5,54 @@ export interface Theme {
     class: string;
 }
 
-const defaultTheme: string = "dark";
-const localStorageKey: string = "theme";
+const BASE_LOCAL_STORAGE_KEY = "theme";
 
 const themes: Theme[] = [
     { name: "Dark", class: "dark" },
     { name: "Light", class: "light" },
 ];
 
-const themeFromLocalStorage: string | null =
-    localStorage.getItem(localStorageKey);
-const selectedTheme: Theme =
-    themes.find((theme) => theme.class === themeFromLocalStorage) ||
-    themes.find((theme) => theme.class === defaultTheme)!;
+function getInitialTheme(): Theme {
+    const themeFromLocalStorage: string | null = localStorage.getItem(
+        BASE_LOCAL_STORAGE_KEY
+    );
+    return (
+        themes.find((theme) => theme.class === themeFromLocalStorage) || themes[0]
+    );
+}
 
-const setThemeClass = () => {
-    const classList = document.documentElement.classList;
+function changeTheme(theme: Theme) {
+    const newThemeClass = theme.class === "dark" ? "light" : "dark";
+    document.documentElement.classList.remove(theme.class);
+    document.documentElement.classList.add(newThemeClass);
+    localStorage.setItem(BASE_LOCAL_STORAGE_KEY, newThemeClass);
+    return themes.find((theme) => theme.class === newThemeClass) || themes[0];
+}
 
-    if (selectedTheme.class.includes("dark")) {
-        classList.remove("light");
-        classList.add("dark");
-    } else {
-        classList.add("light");
-        classList.remove("dark");
-    }
+export default {
+    install(app: App) {
+        const initialTheme = getInitialTheme();
+
+        if (!themes.some((theme) => theme.class === initialTheme.class)) {
+            localStorage.setItem(BASE_LOCAL_STORAGE_KEY, initialTheme.class);
+        }
+
+        const state = {
+            theme: initialTheme,
+            themes: themes,
+        };
+
+        const methods = {
+            changeTheme: () => {
+                state.theme = changeTheme(state.theme);
+            },
+        };
+
+        app.config.globalProperties.$theme = {
+            ...methods,
+            ...state,
+        };
+
+        document.documentElement.classList.add(initialTheme.class);
+    },
 };
-
-const changeTheme = () => {
-    selectedTheme.class = document.documentElement.classList.contains("dark")
-        ? "light"
-        : "dark";
-    localStorage.setItem(localStorageKey, selectedTheme.class);
-    setThemeClass();
-};
-
-const installThemePlugin = (app: App): void => {
-    if (!themes.some((theme) => theme.class === themeFromLocalStorage))
-        localStorage.setItem(localStorageKey, selectedTheme.class);
-
-    app.config.globalProperties.$theme = {
-        themes,
-        changeTheme,
-    };
-
-    setThemeClass();
-};
-
-const ThemePlugin = {
-    themes,
-    selectedTheme,
-    changeTheme,
-    install: installThemePlugin,
-};
-
-export default ThemePlugin;
