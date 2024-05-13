@@ -1,32 +1,39 @@
+/** Vue */
 import { defineComponent, onMounted, onUnmounted } from "vue";
+
+/** Utils */
 import imports from "../../utils/imports";
-import { ArrowIcon } from "../ui/Icon";
-import { BaseButton } from "../ui/Base";
-import { Dropdown, DropdownButton, DropdownTitle } from "../ui/Dropdown";
-import { availableLanguages } from "../../plugins/i18next";
+
+/** Components */
+import { ArrowIcon } from "../ui/icon";
+import { BaseButton } from "../ui/base";
+import { Dropdown, DropdownButton, DropdownTitle } from "../ui/dropdown";
+
+/** Images */
 import defaultAvatar from "../../assets/images/default_avatar.png";
 
-const ProfileDropdown = defineComponent({
-  name: "ProfileDropdown",
+export const ProfileDropdown = defineComponent({
   setup() {
     const { reactive, store, computed } = imports();
 
     const showDropdown = reactive({
-      profileDropdown: false,
-      languageDropdown: false,
+      profile: false,
+      language: false,
     });
 
     const user = computed(() => store.getters._getUser);
 
-    const handleClickOutside = (event: any) => {
-      const target = event.target;
+    const handleClickOutside = (event: { target: any }) => {
       const profileDropdownElement = document.getElementById("ProfileDropdown");
-      if (!profileDropdownElement?.contains(target)) {
-        const { profileDropdown, languageDropdown } = showDropdown;
-        if (profileDropdown) {
-          showDropdown.profileDropdown = false;
-          if (languageDropdown) {
-            showDropdown.languageDropdown = false;
+      if (
+        profileDropdownElement &&
+        !profileDropdownElement.contains(event.target)
+      ) {
+        const { profile, language } = showDropdown;
+        if (profile) {
+          showDropdown.profile = false;
+          if (language) {
+            showDropdown.language = false;
           }
         }
       }
@@ -40,16 +47,12 @@ const ProfileDropdown = defineComponent({
       document.removeEventListener("click", handleClickOutside);
     });
 
-    return {
-      showDropdown,
-      user,
-      store,
-    };
+    return { showDropdown, user, store };
   },
 
   render() {
     const { VITE_DISCORD_SUPPORT_SERVER } = import.meta.env;
-    const { showDropdown, $t, $i18next, user, store } = this;
+    const { showDropdown, $t, user, store } = this;
 
     if (!store._isLogin) {
       return (
@@ -64,8 +67,8 @@ const ProfileDropdown = defineComponent({
         <button
           class="flex items-center lg:gap-x-1 text-black dark:text-gray-100 font-poppins-regular text-base"
           onClick={() => {
-            showDropdown.profileDropdown = !showDropdown.profileDropdown;
-            showDropdown.languageDropdown = false;
+            showDropdown.profile = !showDropdown.profile;
+            showDropdown.language = false;
           }}
         >
           <img
@@ -74,18 +77,12 @@ const ProfileDropdown = defineComponent({
             alt="Avatar"
           />
           <span class="transition-all max-lg:hidden ml-1">{user.username}</span>
-          <ArrowIcon
-            isActive={
-              showDropdown.profileDropdown || showDropdown.languageDropdown
-            }
-          />
+          <ArrowIcon isActive={showDropdown.profile || showDropdown.language} />
         </button>
 
         <Dropdown
           className="right-0 z-20 w-[228px] py-1.5"
-          isOpen={
-            showDropdown.profileDropdown && !showDropdown.languageDropdown
-          }
+          isOpen={showDropdown.profile && !showDropdown.language}
         >
           <DropdownTitle>{import.meta.env.VITE_PROJECT_TITLE}</DropdownTitle>
           <DropdownButton>test</DropdownButton>
@@ -98,41 +95,28 @@ const ProfileDropdown = defineComponent({
           <DropdownTitle>
             {$t("Dropdown.ProfileDropdown.Title.settings")}
           </DropdownTitle>
-          <DropdownButton
-            onClick={() => {
-              const currentTheme =
-                localStorage.getItem("theme")?.toLowerCase() ?? "dark";
-              const classList = document.documentElement.classList;
-              const nextTheme = currentTheme === "dark" ? "light" : "dark";
-              localStorage.setItem("theme", nextTheme);
-              classList.remove(currentTheme);
-              classList.add(nextTheme);
-            }}
-          >
+          <DropdownButton onClick={this.$theme.changeTheme}>
             {$t("Dropdown.ProfileDropdown.Button.theme")}
           </DropdownButton>
           <DropdownButton
-            onClick={() =>
-              (showDropdown.languageDropdown = !showDropdown.languageDropdown)
-            }
+            onClick={() => (showDropdown.language = !showDropdown.language)}
           >
             {$t("Dropdown.ProfileDropdown.Button.language")}
           </DropdownButton>
           <DropdownButton redirect={VITE_DISCORD_SUPPORT_SERVER}>
             {$t("Dropdown.ProfileDropdown.Button.support")}
           </DropdownButton>
-          <DropdownButton to={`/users/logout`}>
+          <DropdownButton to="/users/logout">
             {$t("Dropdown.ProfileDropdown.Button.logout")}
           </DropdownButton>
         </Dropdown>
 
-        <Dropdown isOpen={showDropdown.languageDropdown}>
-          {availableLanguages.map((language) => (
+        <Dropdown isOpen={showDropdown.language}>
+          {this.$i18n.languages.map((language) => (
             <DropdownButton
               onClick={() => {
-                $i18next.changeLanguage(language.lng);
-                localStorage.setItem("lng", language.lng);
-                showDropdown.languageDropdown = false;
+                this.$i18n.changeLanguage(language.lng);
+                showDropdown.language = false;
               }}
             >
               {language.name}
@@ -143,5 +127,3 @@ const ProfileDropdown = defineComponent({
     );
   },
 });
-
-export { ProfileDropdown };

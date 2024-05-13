@@ -1,13 +1,20 @@
+/**Vue */
 import { defineComponent } from "vue";
-import { BoxAnimation } from "../../components/Animations";
+
+/**Utils */
+import imports from "../../utils/imports";
+
+/**Components */
+import BoxAnimation from "../../components/animations/BoxAnimation";
 import {
   Form,
   FormInput,
   FormButton,
   FormParagraph,
-} from "../../components/ui/Form";
+} from "../../components/ui/form";
+
+/**Auth */
 import { validateUsername, validatePassword } from "../../utils/auth/validator";
-import imports from "../../utils/imports";
 
 export default defineComponent({
   name: "Login",
@@ -103,21 +110,12 @@ export default defineComponent({
                     </svg>
                   }
                 />
-                <FormParagraph
-                  onClick={() => this.$router.push("/users/recovery")}
-                  label={this.$t("Form.LoginForm.Button.recovery")}
-                />
-                <FormParagraph
-                  label={this.$t("Form.LoginForm.Button.signup")}
-                  onClick={() =>
-                    this.$router.push({
-                      path: "/users/signup",
-                      query: {
-                        ref: this.route.query.ref || "/",
-                      },
-                    })
-                  }
-                />
+                <FormParagraph to="/users/recovery">
+                  {this.$t("Form.LoginForm.Button.recovery")}
+                </FormParagraph>
+                <FormParagraph to="/users/signup">
+                  {this.$t("Form.LoginForm.Button.signup")}
+                </FormParagraph>
               </>
             }
             label={this.$t("Form.LoginForm.title")}

@@ -1,12 +1,19 @@
+/**Vue */
 import { defineComponent } from "vue";
+
+/**Utils */
 import imports from "../../utils/imports";
-import { BoxAnimation } from "../../components/Animations";
+
+/**Components */
+import BoxAnimation from "../../components/animations/BoxAnimation";
 import {
   Form,
   FormInput,
   FormButton,
   FormParagraph,
-} from "../../components/ui/Form";
+} from "../../components/ui/form";
+
+/**Auth */
 import { validatePassword } from "../../utils/auth/validator";
 
 export default defineComponent({
@@ -129,15 +136,9 @@ export default defineComponent({
                     }
                   />
                 )}
-                <FormParagraph
-                  label={this.$t("Form.PasswordResetForm.Button.login")}
-                  onClick={() =>
-                    this.$router.push({
-                      path: "/users/login",
-                      query: { ref: this.route.query.ref || "/" },
-                    })
-                  }
-                />
+                <FormParagraph to="/users/login">
+                  {this.$t("Form.PasswordResetForm.Button.login")}
+                </FormParagraph>
               </>
             }
             label={this.$t("Form.PasswordResetForm.title")}

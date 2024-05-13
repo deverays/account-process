@@ -1,23 +1,61 @@
 import { App } from "vue";
 
-export default {
-    install(app: App) {
-        let theme = localStorage.theme;
-        const themes = ["dark", "light"];
+export interface Theme {
+    name: string;
+    class: string;
+}
 
-        if (!themes.includes(theme)) {
-            theme = "dark";
-            localStorage.setItem("lng", theme);
-        }
+const defaultTheme: string = "dark";
+const localStorageKey: string = "theme";
 
-        const classList = document.documentElement.classList;
+const themes: Theme[] = [
+    { name: "Dark", class: "dark" },
+    { name: "Light", class: "light" },
+];
 
-        if (/dark/.test(theme)) {
-            classList.add("dark");
-            classList.remove("light");
-        } else {
-            classList.add("light");
-            classList.remove("dark");
-        }
-    },
+const themeFromLocalStorage: string | null =
+    localStorage.getItem(localStorageKey);
+const selectedTheme: Theme =
+    themes.find((theme) => theme.class === themeFromLocalStorage) ||
+    themes.find((theme) => theme.class === defaultTheme)!;
+
+const setThemeClass = () => {
+    const classList = document.documentElement.classList;
+
+    if (selectedTheme.class.includes("dark")) {
+        classList.remove("light");
+        classList.add("dark");
+    } else {
+        classList.add("light");
+        classList.remove("dark");
+    }
 };
+
+const changeTheme = () => {
+    selectedTheme.class = document.documentElement.classList.contains("dark")
+        ? "light"
+        : "dark";
+    localStorage.setItem(localStorageKey, selectedTheme.class);
+    setThemeClass();
+};
+
+const installThemePlugin = (app: App): void => {
+    if (!themes.some((theme) => theme.class === themeFromLocalStorage))
+        localStorage.setItem(localStorageKey, selectedTheme.class);
+
+    app.config.globalProperties.$theme = {
+        themes,
+        changeTheme,
+    };
+
+    setThemeClass();
+};
+
+const ThemePlugin = {
+    themes,
+    selectedTheme,
+    changeTheme,
+    install: installThemePlugin,
+};
+
+export default ThemePlugin;

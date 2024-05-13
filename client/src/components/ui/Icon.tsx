@@ -1,8 +1,10 @@
-import classNames from "classnames";
-import { defineComponent } from "vue";
+/**Vue */
+import { defineComponent, h } from "vue";
+
+/**Lib */
+import { cn } from "../../lib/utilts";
 
 const ArrowIcon = defineComponent({
-  name: "ArrowIcon",
   props: {
     isActive: {
       type: Boolean,
@@ -15,14 +17,14 @@ const ArrowIcon = defineComponent({
   },
   render() {
     const { isActive, className } = this;
-    return (
+    return h(
       <svg
         width="24"
         height="24"
         viewBox="0 0 24 24"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        class={`${className} ${isActive ? "-scale-100" : "scale-100"}`}
+        class={cn(className, isActive ? "-scale-100" : "scale-100")}
       >
         <path
           d="M7 14.5l5-5 5 5"
@@ -35,7 +37,6 @@ const ArrowIcon = defineComponent({
 });
 
 const AddIcon = defineComponent({
-  name: "AddIcon",
   props: {
     className: {
       type: String,
@@ -43,7 +44,7 @@ const AddIcon = defineComponent({
     },
   },
   render() {
-    return (
+    return h(
       <svg
         class={this.className}
         width="24"
@@ -73,9 +74,8 @@ const AddIcon = defineComponent({
 });
 
 const CategoryIcon = defineComponent({
-  name: "CategoryIcon",
   render() {
-    return (
+    return h(
       <svg
         width="24"
         height="24"
@@ -98,9 +98,8 @@ const CategoryIcon = defineComponent({
 });
 
 const HelloIcon = defineComponent({
-  name: "HelloIcon",
   render() {
-    return (
+    return h(
       <svg
         width="24"
         height="24"
@@ -133,7 +132,6 @@ const HelloIcon = defineComponent({
 });
 
 const InfoCircleIcon = defineComponent({
-  name: "InfoCircle",
   props: {
     className: {
       type: String,
@@ -141,10 +139,10 @@ const InfoCircleIcon = defineComponent({
     },
   },
   render() {
-    return (
+    return h(
       <svg
         fill="currentColor"
-        class={classNames(this.className, "transition-all")}
+        class={cn(this.className, "transition-all")}
         viewBox="0 0 24 24"
         id="Layer_1"
         data-name="Layer 1"

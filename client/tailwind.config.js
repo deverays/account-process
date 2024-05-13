@@ -26,7 +26,7 @@ export default {
           700: "#0055ff",
           800: "#0039ff",
           900: "#001cff",
-          950: "#0000ff"
+          950: "#0000ff",
         },
         teal: {
           100: "#E6FFFA",
@@ -87,5 +87,5 @@ export default {
   variants: {
     extend: {},
   },
-  plugins: [],
+  plugins: [require("tailwindcss-animate")],
 };

@@ -1,37 +1,28 @@
+/**Vue */
 import { createApp } from "vue";
 
+/**Styles */
 import "./assets/globals.css";
 import App from "./App.vue";
+
+/**Router */
 import router from "./router";
+
+/**Modules */
 import { createPinia } from "pinia";
 import VueLazyLoad from "vue3-lazyload";
 import { MotionPlugin } from "@vueuse/motion";
-import i18next from "./plugins/i18next.ts";
+
+/**Plugins */
+import i18n from "./plugins/i18n.ts";
 import theme from "./plugins/theme.ts";
-import AppLayout from "./layouts/AppLayout.tsx";
 
 const app = createApp(App);
 
-app.component("appLayout", AppLayout);
-
 app.use(createPinia());
-app.use(VueLazyLoad, {
-    loading: "",
-    error: "",
-    lifecycle: {
-        loading: (el) => {
-            //pass
-        },
-        error: (el) => {
-            //pass
-        },
-        loaded: (el) => {
-            console.log("loaded", el);
-        },
-    },
-});
+app.use(VueLazyLoad, {});
 app.use(MotionPlugin);
-app.use(i18next);
+app.use(i18n);
 app.use(theme);
 app.use(router);
 app.mount("#root");

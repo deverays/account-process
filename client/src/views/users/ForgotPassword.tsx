@@ -1,16 +1,22 @@
+/**Vue */
 import { defineComponent } from "vue";
+
+/**Utils */
 import imports from "../../utils/imports";
-import { BoxAnimation } from "../../components/Animations";
+
+/**Components */
+import BoxAnimation from "../../components/animations/BoxAnimation";
 import {
   Form,
   FormInput,
   FormButton,
   FormParagraph,
-} from "../../components/ui/Form";
+} from "../../components/ui/form";
+
+/**Auth */
 import { validateUsername } from "../../utils/auth/validator";
 
 export default defineComponent({
-  name: "ForgotPassword",
   setup() {
     const { store, route, reactive, watchEffect, postReq } = imports();
 
@@ -93,17 +99,9 @@ export default defineComponent({
                     }
                   />
                 )}
-                <FormParagraph
-                  label={this.$t("Form.ForgotPasswordForm.Button.login")}
-                  onClick={() =>
-                    this.$router.push({
-                      path: "/users/login",
-                      query: {
-                        ref: this.route.query.ref || "/",
-                      },
-                    })
-                  }
-                />
+                <FormParagraph to="/users/login">
+                  {this.$t("Form.ForgotPasswordForm.Button.login")}
+                </FormParagraph>
               </>
             }
             label={this.$t("Form.ForgotPasswordForm.title")}

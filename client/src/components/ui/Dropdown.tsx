@@ -1,8 +1,10 @@
-import { defineComponent, PropType } from "vue";
-import classNames from "classnames";
+/**Vue */
+import { defineComponent, PropType, h } from "vue";
+
+/**Lib */
+import { cn } from "../../lib/utilts";
 
 const Dropdown = defineComponent({
-  name: "Dropdown",
   props: {
     isOpen: {
       type: Boolean,
@@ -14,25 +16,23 @@ const Dropdown = defineComponent({
     },
   },
   render() {
-    const { $slots, isOpen, className } = this;
-    return (
+    return h(
       <div
-        class={classNames(
-          className,
+        class={cn(
+          this.className,
           "transition-all absolute rounded-lg bg-light-300 dark:bg-dark-300",
-          isOpen
+          this.isOpen
             ? "opacity-100 top-[calc(100%+8px)] pointer-events-auto"
             : "opacity-0 top-[calc(100%-24px)] pointer-events-none"
         )}
       >
-        {$slots.default ? $slots.default() : null}
+        {this.$slots.default ? this.$slots.default() : []}
       </div>
     );
   },
 });
 
 const DropdownButton = defineComponent({
-  name: "DropdownButton",
   props: {
     onClick: Function as PropType<() => void>,
     to: String,
@@ -42,56 +42,56 @@ const DropdownButton = defineComponent({
       default: "w-[94%]",
     },
   },
-  render() {
-    const { onClick, $slots, to, redirect } = this;
+  setup() {
+    const getClassNames = (customClassName: string) => {
+      return cn(
+        "transition-all flex items-center justify-start m-auto rounded-md py-2 pl-3 space-x-2 font-poppins-regular text-sm opacity-80 hover:opacity-100 hover:bg-opacity-60 text-black dark:text-gray-100 hover:bg-light-100 dark:hover:bg-dark-100",
+        customClassName
+      );
+    };
 
-    if (to)
-      return (
+    return { getClassNames };
+  },
+  render() {
+    const slotContent = this.$slots.default ? this.$slots.default() : [];
+
+    if (this.$props.to)
+      return h(
         <router-link
-          class={classNames(
-            "transition-all flex items-center justify-start m-auto rounded-md py-2 pl-3 space-x-2 font-poppins-regular text-sm opacity-80 hover:opacity-100 hover:bg-opacity-60 text-black dark:text-gray-100 hover:bg-light-100 dark:hover:bg-dark-100",
-            this.className
-          )}
-          to={to}
+          class={cn(this.getClassNames(this.$props.className))}
+          to={this.$props.to}
         >
-          {$slots.default ? $slots.default() : null}
+          {slotContent}
         </router-link>
       );
 
-    if (redirect)
-      return (
+    if (this.$props.redirect)
+      return h(
         <button
-          class={classNames(
-            "transition-all flex items-center justify-start m-auto rounded-md py-2 pl-3 space-x-2 font-poppins-regular text-sm opacity-80 hover:opacity-100 hover:bg-opacity-60 text-black dark:text-gray-100 hover:bg-light-100 dark:hover:bg-dark-100",
-            this.className
-          )}
-          onClick={() => (location.href = redirect)}
+          class={cn(this.getClassNames(this.$props.className))}
+          onClick={() => (location.href = this.$props.redirect as string)}
         >
-          {$slots.default ? $slots.default() : null}
+          {slotContent}
         </button>
       );
 
-    if (onClick)
-      return (
+    if (this.$props.onClick)
+      return h(
         <button
-          class={classNames(
-            "transition-all flex items-center justify-start m-auto rounded-md py-2 pl-3 space-x-2 font-poppins-regular text-sm opacity-80 hover:opacity-100 hover:bg-opacity-60 text-black dark:text-gray-100 hover:bg-light-100 dark:hover:bg-dark-100",
-            this.className
-          )}
-          onClick={onClick}
+          class={cn(this.getClassNames(this.$props.className))}
+          onClick={this.$props.onClick}
         >
-          {$slots.default ? $slots.default() : null}
+          {slotContent}
         </button>
       );
   },
 });
 
 const DropdownTitle = defineComponent({
-  name: "DropdownTitle",
   render() {
-    return (
+    return h(
       <h1 class="transition-all m-auto w-[94%] py-1.5 pl-3 text-sm font-poppins-bold opacity-95 text-black dark:text-gray-100">
-        {this.$slots.default ? this.$slots.default() : null}
+        {this.$slots.default ? this.$slots.default() : []}
       </h1>
     );
   },

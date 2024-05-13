@@ -1,8 +1,10 @@
-import classNames from "classnames";
+/**Vue */
 import { defineComponent, ref, watch } from "vue";
 
+/**Modules */
+import classNames from "classnames";
+
 const Progress = defineComponent({
-  name: "Progress",
   props: {
     value: {
       type: Number,
@@ -50,7 +52,6 @@ const Progress = defineComponent({
 });
 
 const Loading = defineComponent({
-  name: "Loading",
   render() {
     return (
       <div
@@ -80,7 +81,6 @@ const Loading = defineComponent({
 });
 
 const Spinner = defineComponent({
-  name: "Spinner",
   props: {
     className: String,
   },
