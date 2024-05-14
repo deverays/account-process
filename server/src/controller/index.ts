@@ -1,18 +1,21 @@
 import { type Router } from "express";
+import { userInfo_get } from "./routes/user";
 import {
-    userInfo_get,
     login_post,
     signup_post,
     forgotPassword_post,
     passwordReset_post,
     forgotUsername_post,
-} from "./routes/user";
+} from "./routes/auth";
 
 export default (router: Router) => {
+    /**User */
     router.get("/user", userInfo_get);
-    router.post("/users/login", login_post);
-    router.post("/users/signup", signup_post);
-    router.post("/users/password-reset", passwordReset_post);
-    router.post("/users/forgot-password", forgotPassword_post);
-    router.post("/users/forgot-username", forgotUsername_post);
+
+    /**Auth */
+    router.post("/auth/login", login_post);
+    router.post("/auth/signup", signup_post);
+    router.post("/auth/password-reset", passwordReset_post);
+    router.post("/auth/forgot-password", forgotPassword_post);
+    router.post("/auth/forgot-username", forgotUsername_post);
 };

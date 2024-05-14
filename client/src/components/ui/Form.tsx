@@ -28,9 +28,7 @@ const FormInput = defineComponent({
     const { label, errorActive, type, $emit } = this;
 
     return h(
-      <div
-        class={cn("transition-all flex flex-col items-center w-full relative")}
-      >
+      <div class={cn("transition-all flex flex-col items-center w-full")}>
         <input
           placeholder={label}
           class={cn(
@@ -138,9 +136,8 @@ const FormButton = defineComponent({
 const Form = defineComponent({
   name: "Form",
   props: {
-    label: {
+    title: {
       type: String,
-      default: "Default Form Label",
     },
     top: {
       type: [String, Object, Function],
@@ -153,7 +150,7 @@ const Form = defineComponent({
   },
   render() {
     const { store } = imports();
-    const { label, bottom, top } = this.$props;
+    const { title, bottom, top } = this.$props;
 
     return h(
       <div
@@ -166,7 +163,7 @@ const Form = defineComponent({
         )}
       >
         <h1 class="transition-all text-black dark:text-gray-200 text-3xl font-poppins-bold pointer-events-none mt-10 mb-8">
-          {label}
+          {title}
         </h1>
         <div class="flex flex-col justify-between items-center h-full w-full">
           <span class="flex flex-col gap-y-3 items-center w-full">{top}</span>

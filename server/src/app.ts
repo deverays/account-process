@@ -1,8 +1,9 @@
 import "colors";
-import express, { Application, Router } from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 import db from "./database/dbConnection";
+import { v2 as cloudinary } from 'cloudinary';
+import express, { Application, Router } from "express";
 
 import controller from "./controller";
 
@@ -18,6 +19,8 @@ controller(router);
 app.use(cors());
 app.use(bodyParser.json());
 app.use("/api", router);
+
+cloudinary.config(config.cloudinary);
 
 db().then(() =>
     console.log(

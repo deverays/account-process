@@ -1,3 +1,4 @@
+/**Vue */
 import { createRouter, createWebHistory, RouteComponent } from "vue-router";
 
 const routes = [
@@ -6,35 +7,40 @@ const routes = [
         path: "/",
         component: (): Promise<RouteComponent> => import("../views/HomePage.vue"),
     },
+    /**Auth */
     {
         name: "login",
-        path: "/users/login",
-        component: (): Promise<RouteComponent> => import("../views/users/Login"),
+        path: "/auth/login",
+        component: (): Promise<RouteComponent> => import("../views/auth/Login"),
     },
     {
         name: "signup",
-        path: "/users/signup",
-        component: (): Promise<RouteComponent> => import("../views/users/Signup"),
+        path: "/auth/signup",
+        component: (): Promise<RouteComponent> => import("../views/auth/Signup"),
     },
     {
         name: "forgotPassword",
-        path: "/users/forgot-password",
-        component: (): Promise<RouteComponent> => import("../views/users/ForgotPassword"),
+        path: "/auth/forgot-password",
+        component: (): Promise<RouteComponent> =>
+            import("../views/auth/ForgotPassword"),
     },
     {
         name: "passwordReset",
-        path: "/users/password-reset/:code",
-        component: (): Promise<RouteComponent> => import("../views/users/PasswordReset"),
+        path: "/auth/password-reset/:code",
+        component: (): Promise<RouteComponent> =>
+            import("../views/auth/PasswordReset"),
     },
     {
         name: "forgotUsername",
-        path: "/users/forgot-username",
-        component: (): Promise<RouteComponent> => import("../views/users/ForgotUsername"),
+        path: "/auth/forgot-username",
+        component: (): Promise<RouteComponent> =>
+            import("../views/auth/ForgotUsername"),
     },
     {
         name: "logout",
-        path: "/users/logout",
-        component: (): Promise<RouteComponent> => import("../views/users/Logout.vue"),
+        path: "/auth/logout",
+        component: (): Promise<RouteComponent> =>
+            import("../views/auth/Logout.vue"),
     },
     { path: "/:pathMatch(.*)", redirect: "/" },
 ];
@@ -56,10 +62,11 @@ router.beforeEach(async (to, from, next) => {
         !userData?.access_token &&
         authReq.includes(to.name as string) &&
         !authNotReq.includes(to.name as string)
-    )
+    ) {
         location.href = VITE_DISCORD_OAUTH2_URL;
-
-    next();
+    } else {
+        next();
+    }
 });
 
 export default router;

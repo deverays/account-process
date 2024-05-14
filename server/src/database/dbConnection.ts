@@ -3,5 +3,5 @@ import * as config from "../../config.json";
 
 export default async () =>
     await mongoose
-        .connect(config.database.url)
+        .connect(config.mongo_url)
         .catch((err) => console.log(err));

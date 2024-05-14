@@ -1,12 +1,15 @@
 {
-    "database": {
-        "url": "mongodb://localhost:27017/test"
-    },
+    "mongo_url": "mongodb://localhost:27017/p4b",
     "server": {
         "port": 5000
     },
     "nodemailer": {
         "user": "",
         "pass": ""
+    },
+    "cloudinary": {
+        "cloud_name": "",
+        "api_key": "",
+        "api_secret": ""
     }
 }

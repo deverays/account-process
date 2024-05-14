@@ -55,6 +55,7 @@ export default {
     },
 
     handleUnauthorized() {
-        location.href = "/users/logout"
+        if (!window.location.pathname.includes("/auth/logout"))
+            location.href = "/auth/logout";
     },
 };

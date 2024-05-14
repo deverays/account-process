@@ -1,16 +1,13 @@
-/** Vue */
+/**Vue */
 import { defineComponent, onMounted, onUnmounted } from "vue";
 
-/** Utils */
+/**Utils */
 import imports from "../../utils/imports";
 
-/** Components */
+/**Components */
 import { ArrowIcon } from "../ui/icon";
 import { BaseButton } from "../ui/base";
 import { Dropdown, DropdownButton, DropdownTitle } from "../ui/dropdown";
-
-/** Images */
-import defaultAvatar from "../../assets/images/default_avatar.png";
 
 export const ProfileDropdown = defineComponent({
   setup() {
@@ -56,7 +53,7 @@ export const ProfileDropdown = defineComponent({
 
     if (!store._isLogin) {
       return (
-        <BaseButton to="/users/login">
+        <BaseButton to="/auth/login">
           {$t("Dropdown.ProfileDropdown.Button.login")}
         </BaseButton>
       );
@@ -71,11 +68,7 @@ export const ProfileDropdown = defineComponent({
             showDropdown.language = false;
           }}
         >
-          <img
-            v-lazy={defaultAvatar}
-            class="w-8 h-8 rounded-full"
-            alt="Avatar"
-          />
+          <img v-lazy={user.avatar} class="w-8 h-8 rounded-full" alt="Avatar" />
           <span class="transition-all max-lg:hidden ml-1">{user.username}</span>
           <ArrowIcon isActive={showDropdown.profile || showDropdown.language} />
         </button>
@@ -85,7 +78,9 @@ export const ProfileDropdown = defineComponent({
           isOpen={showDropdown.profile && !showDropdown.language}
         >
           <DropdownTitle>{import.meta.env.VITE_PROJECT_TITLE}</DropdownTitle>
-          <DropdownButton>test</DropdownButton>
+          <DropdownButton to="/settings/profile">
+            {$t("Dropdown.ProfileDropdown.Button.profile")}
+          </DropdownButton>
           <DropdownTitle>
             {$t("Dropdown.ProfileDropdown.Title.payment")}
           </DropdownTitle>
@@ -106,7 +101,7 @@ export const ProfileDropdown = defineComponent({
           <DropdownButton redirect={VITE_DISCORD_SUPPORT_SERVER}>
             {$t("Dropdown.ProfileDropdown.Button.support")}
           </DropdownButton>
-          <DropdownButton to="/users/logout">
+          <DropdownButton to="/auth/logout">
             {$t("Dropdown.ProfileDropdown.Button.logout")}
           </DropdownButton>
         </Dropdown>
@@ -115,7 +110,7 @@ export const ProfileDropdown = defineComponent({
           {this.$i18n.languages.map((language) => (
             <DropdownButton
               onClick={() => {
-                this.$i18n.changeLanguage(language.lng);
+                this.$i18n.changeLanguage(language.id);
                 showDropdown.language = false;
               }}
             >

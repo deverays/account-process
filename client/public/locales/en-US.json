@@ -12,7 +12,8 @@
                 "billing": "Billing",
                 "theme": "Theme Change",
                 "language": "language",
-                "support": "Support Server"
+                "support": "Support Server",
+                "profile": "Profile"
             }
         }
     },

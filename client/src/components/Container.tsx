@@ -7,7 +7,7 @@ import { cn } from "../lib/utilts";
 /**Components */
 import { AppHeader } from "../components/Header";
 
-export default defineComponent({
+export const AppContainer = defineComponent({
   props: { className: String },
   render() {
     return h(

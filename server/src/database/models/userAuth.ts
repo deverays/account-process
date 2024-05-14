@@ -8,6 +8,8 @@ interface UserAuthTypes {
     public: {
         username: string;
         created_at: Date;
+        avatar: string;
+        id: string;
     };
 
     password_reset?: {
@@ -31,7 +33,7 @@ const userAuthSchema = new Schema<UserAuthTypes>({
 
     password: {
         type: String,
-        required: true
+        required: true,
     },
 
     access_token: {
@@ -49,6 +51,12 @@ const userAuthSchema = new Schema<UserAuthTypes>({
         created_at: {
             type: Date,
             default: Date.now,
+        },
+        avatar: {
+            type: String,
+        },
+        id: {
+            type: String,
         },
     },
 
