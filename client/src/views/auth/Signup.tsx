@@ -1,27 +1,14 @@
-/**Vue */
 import { defineComponent } from "vue";
-
-/**Utils */
 import imports from "../../utils/imports";
 
-/**Components */
 import BoxAnimation from "../../components/animations/BoxAnimation";
-import {
-  Form,
-  FormInput,
-  FormButton,
-  FormParagraph,
-} from "../../components/ui/form";
+import { Form, FormInput, FormButton } from "../../components/ui/form";
 
-/**Auth */
 import {
   validateUsername,
   validateEmail,
   validatePassword,
 } from "../../utils/auth/validator";
-
-/**Images */
-import defaultAvatar from "../../assets/images/default_avatar.png";
 
 export default defineComponent({
   setup() {
@@ -49,12 +36,11 @@ export default defineComponent({
     const onSignup = async () => {
       store._isProgress = 40;
       try {
-        await postReq("/auth/signup", {
+        await postReq("/signup", {
           email: state.email,
           username: state.username,
           password: state.password,
           passwordAgain: state.passwordAgain,
-          avatar: URL.createObjectURL(new Blob([defaultAvatar])),
         });
         store._isProgress = 100;
         router.push({
@@ -76,67 +62,47 @@ export default defineComponent({
       <div v-motion-slide-visible-once-right>
         <BoxAnimation class="fixed" />
         <div class="flex justify-center items-center h-dvh w-dvw">
-          <Form
-            class="md:h-[550px]"
-            top={
-              <>
-                <FormInput
-                  errorActive={errorStatus === 409}
-                  onChange={(item) => (this.state.username = item)}
-                  type="text"
-                  label={this.$t("Form.SignupForm.Input.username")}
-                />
-                <FormInput
-                  errorActive={errorStatus === 409}
-                  onChange={(item) => (this.state.email = item)}
-                  class=""
-                  type="email"
-                  label="E-mail"
-                />
-                <FormInput
-                  onChange={(item) => (this.state.password = item)}
-                  class=""
-                  type="password"
-                  label={this.$t("Form.SignupForm.Input.password")}
-                />
-                <FormInput
-                  onChange={(item) => (this.state.passwordAgain = item)}
-                  type="password"
-                  label={this.$t("Form.SignupForm.Input.passwordAgain")}
-                />
-              </>
-            }
-            bottom={
-              <>
-                <FormButton
-                  onClick={this.onSignup}
-                  class="hover:w-32 mb-5"
-                  label={this.$t("Form.SignupForm.Button.signup")}
-                  active={buttonActive}
-                  icon={
-                    <svg
-                      class="w-[32px] h-[32px] text-gray-100"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M5 12H19M19 12L13 6M19 12L13 18"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                    </svg>
-                  }
-                />
-                <FormParagraph to="/auth/login">
-                  {this.$t("Form.SignupForm.Button.login")}
-                </FormParagraph>
-              </>
-            }
-            title={this.$t("Form.SignupForm.title")}
-          />
+          <Form title={this.$t("Form.SignupForm.title")}>
+            <section class="flex flex-col items-center gap-y-4">
+              <FormInput
+                errorActive={errorStatus === 409}
+                onChange={(item) => (this.state.username = item)}
+                type="text"
+                label={this.$t("Form.SignupForm.Input.username")}
+              />
+              <FormInput
+                errorActive={errorStatus === 409}
+                onChange={(item) => (this.state.email = item)}
+                class=""
+                type="email"
+                label="E-mail"
+              />
+              <FormInput
+                onChange={(item) => (this.state.password = item)}
+                class=""
+                type="password"
+                label={this.$t("Form.SignupForm.Input.password")}
+              />
+              <FormInput
+                onChange={(item) => (this.state.passwordAgain = item)}
+                type="password"
+                label={this.$t("Form.SignupForm.Input.passwordAgain")}
+              />
+            </section>
+            <section class="flex flex-col gap-y-1 items-center w-full">
+              <FormButton
+                onClick={this.onSignup}
+                label={this.$t("Form.SignupForm.Button.signup")}
+                isActive={buttonActive}
+              />
+              <router-link
+                to="/auth/login"
+                class="transition-all text-center opacity-60 hover:opacity-80 text-black dark:text-gray-200 font-rubik-regular"
+              >
+                {this.$t("Form.SignupForm.Button.login")}
+              </router-link>
+            </section>
+          </Form>
         </div>
       </div>
     );

@@ -1,7 +1,4 @@
-/**Vue */
 import { defineComponent, PropType, h } from "vue";
-
-/**Lib */
 import { cn } from "../../lib/utilts";
 
 const Dropdown = defineComponent({

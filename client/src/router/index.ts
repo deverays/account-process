@@ -1,53 +1,54 @@
-/**Vue */
-import { createRouter, createWebHistory, RouteComponent } from "vue-router";
+import { createRouter, createWebHistory } from "vue-router";
 
-const routes = [
-    {
-        name: "homepage",
-        path: "/",
-        component: (): Promise<RouteComponent> => import("../views/HomePage.vue"),
-    },
-    /**Auth */
-    {
-        name: "login",
-        path: "/auth/login",
-        component: (): Promise<RouteComponent> => import("../views/auth/Login"),
-    },
-    {
-        name: "signup",
-        path: "/auth/signup",
-        component: (): Promise<RouteComponent> => import("../views/auth/Signup"),
-    },
-    {
-        name: "forgotPassword",
-        path: "/auth/forgot-password",
-        component: (): Promise<RouteComponent> =>
-            import("../views/auth/ForgotPassword"),
-    },
-    {
-        name: "passwordReset",
-        path: "/auth/password-reset/:code",
-        component: (): Promise<RouteComponent> =>
-            import("../views/auth/PasswordReset"),
-    },
-    {
-        name: "forgotUsername",
-        path: "/auth/forgot-username",
-        component: (): Promise<RouteComponent> =>
-            import("../views/auth/ForgotUsername"),
-    },
-    {
-        name: "logout",
-        path: "/auth/logout",
-        component: (): Promise<RouteComponent> =>
-            import("../views/auth/Logout.vue"),
-    },
-    { path: "/:pathMatch(.*)", redirect: "/" },
-];
 const router = createRouter({
-    routes,
+    routes: [],
     history: createWebHistory(),
 });
+
+router.addRoute({
+    name: "homepage",
+    path: "/",
+    component: () => import("../views/HomePage.vue"),
+});
+
+router.addRoute({
+    name: "auth",
+    path: "/auth",
+    children: [
+        {
+            name: "login",
+            path: "login",
+            component: () => import("../views/auth/Login"),
+        },
+        {
+            name: "signup",
+            path: "signup",
+            component: () => import("../views/auth/Signup"),
+        },
+        {
+            name: "forgotPassword",
+            path: "forgot-password",
+            component: () => import("../views/auth/ForgotPassword"),
+        },
+        {
+            name: "passwordReset",
+            path: "password-reset/:code",
+            component: () => import("../views/auth/PasswordReset"),
+        },
+        {
+            name: "forgotUsername",
+            path: "forgot-username",
+            component: () => import("../views/auth/ForgotUsername"),
+        },
+        {
+            name: "logout",
+            path: "logout",
+            component: () => import("../views/auth/Logout.vue"),
+        },
+    ],
+});
+
+router.replace(router.currentRoute.value.fullPath);
 
 router.beforeEach(async (to, from, next) => {
     const { VITE_DISCORD_OAUTH2_URL, VITE_PROJECT_TITLE } = import.meta.env;

@@ -15,7 +15,7 @@ export const AppContainer = defineComponent({
         <AppHeader />
         <div
           class={cn(
-            "transition-all duration-700 flex flex-col items-center mb-20 mt-16 lg:mt-20 w-full"
+            "transition-all duration-700 flex flex-col items-center mb-20 mt-16 lg:mt-20 w-dvw"
           )}
         >
           <div v-motion-slide-visible-once-left class={this.className}>

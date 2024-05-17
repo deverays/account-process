@@ -16,6 +16,11 @@
             }
         }
     },
+    "Banner": {
+        "AppBanner": {
+            "paragraph": "Türkiye'nin ilk yenilikçi forumu"
+        }
+    },
     "Form": {
         "LoginForm": {
             "title": "Giriş",

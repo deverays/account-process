@@ -1,7 +1,9 @@
 <template>
-  <Progress :value="store._isProgress" />
-  <Loading v-if="store._isLoading" />
-  <RouterView v-else />
+  <router-view v-slot="{ Component }">
+    <Progress :value="store._isProgress" />
+    <Loading v-if="store._isLoading" />
+    <component v-else :is="Component" />
+  </router-view>
 </template>
 
 <script setup lang="ts">

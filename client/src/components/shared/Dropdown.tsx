@@ -68,7 +68,11 @@ export const ProfileDropdown = defineComponent({
             showDropdown.language = false;
           }}
         >
-          <img v-lazy={user.avatar} class="w-8 h-8 rounded-full" alt="Avatar" />
+          <img
+            v-lazy={user.avatar_url}
+            class="w-8 h-8 rounded-full"
+            alt="Avatar"
+          />
           <span class="transition-all max-lg:hidden ml-1">{user.username}</span>
           <ArrowIcon isActive={showDropdown.profile || showDropdown.language} />
         </button>
@@ -78,7 +82,7 @@ export const ProfileDropdown = defineComponent({
           isOpen={showDropdown.profile && !showDropdown.language}
         >
           <DropdownTitle>{import.meta.env.VITE_PROJECT_TITLE}</DropdownTitle>
-          <DropdownButton to="/settings/profile">
+          <DropdownButton to={`/users/@me`}>
             {$t("Dropdown.ProfileDropdown.Button.profile")}
           </DropdownButton>
           <DropdownTitle>

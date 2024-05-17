@@ -17,6 +17,11 @@
             }
         }
     },
+    "Banner": {
+        "AppBanner": {
+            "paragraph": "Turkey's first innovative forum"
+        }
+    },
     "Form": {
         "LoginForm": {
             "title": "Giriş",

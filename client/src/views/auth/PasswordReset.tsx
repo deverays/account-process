@@ -1,19 +1,9 @@
-/**Vue */
 import { defineComponent } from "vue";
-
-/**Utils */
 import imports from "../../utils/imports";
 
-/**Components */
 import BoxAnimation from "../../components/animations/BoxAnimation";
-import {
-  Form,
-  FormInput,
-  FormButton,
-  FormParagraph,
-} from "../../components/ui/form";
+import { Form, FormInput, FormButton } from "../../components/ui/form";
 
-/**Auth */
 import { validatePassword } from "../../utils/auth/validator";
 
 export default defineComponent({
@@ -83,10 +73,9 @@ export default defineComponent({
       <div v-motion-slide-visible-once-right>
         <BoxAnimation class="fixed" />
         <div class="flex justify-center items-center h-dvh w-dvw">
-          <Form
-            class="md:h-[450px]"
-            top={
-              verifyCode ? (
+          <Form title={this.$t("Form.PasswordResetForm.title")}>
+            <section class="flex flex-col items-center gap-y-4">
+              {verifyCode ? (
                 <>
                   <FormInput
                     errorActive={errorStatus === 400}
@@ -107,41 +96,24 @@ export default defineComponent({
                 <p class="text-3xl text-gray-200 font-rubik-regular text-center w-[90%]">
                   {this.$t("Form.PasswordResetForm.message")}
                 </p>
-              )
-            }
-            bottom={
-              <>
-                {verifyCode && (
-                  <FormButton
-                    class="hover:w-32 lg:hover:w-[110px] mb-5"
-                    label={this.$t("Form.PasswordResetForm.Button.reset")}
-                    active={buttonActive}
-                    onClick={this.onPasswordReset}
-                    icon={
-                      <svg
-                        class="w-[32px] h-[32px] text-gray-100"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M5 12H19M19 12L13 6M19 12L13 18"
-                          stroke="currentColor"
-                          stroke-width="2"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        />
-                      </svg>
-                    }
-                  />
-                )}
-                <FormParagraph to="/auth/login">
-                  {this.$t("Form.PasswordResetForm.Button.login")}
-                </FormParagraph>
-              </>
-            }
-            title={this.$t("Form.PasswordResetForm.title")}
-          />
+              )}
+            </section>
+            <section class="flex flex-col gap-y-1 items-center w-full">
+              {verifyCode && (
+                <FormButton
+                  label={this.$t("Form.PasswordResetForm.Button.reset")}
+                  isActive={buttonActive}
+                  onClick={this.onPasswordReset}
+                />
+              )}
+              <router-link
+                to="/auth/login"
+                class="transition-all text-center opacity-60 hover:opacity-80 text-black dark:text-gray-200 font-rubik-regular"
+              >
+                {this.$t("Form.PasswordResetForm.Button.login")}
+              </router-link>
+            </section>
+          </Form>
         </div>
       </div>
     );

@@ -1,15 +1,16 @@
 {
-    "mongo_url": "mongodb://localhost:27017/p4b",
+    "mongo_url": "mongodb://localhost:27017",
+    "default_avatar_url": "https://p4b-forum.b-cdn.net/1715860872107-c9f4433b171db3ae2494962bfd0284a0-default_avatar.png",
     "server": {
         "port": 5000
     },
     "nodemailer": {
-        "user": "",
-        "pass": ""
+        "user": ",,,",
+        "pass": ",,,"
     },
-    "cloudinary": {
-        "cloud_name": "",
-        "api_key": "",
-        "api_secret": ""
+    "bunny": {
+        "storage_name": ",,,",
+        "host_name": ",,,",
+        "access_key": ",,,"
     }
 }

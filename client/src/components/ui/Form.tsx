@@ -28,14 +28,16 @@ const FormInput = defineComponent({
     const { label, errorActive, type, $emit } = this;
 
     return h(
-      <div class={cn("transition-all flex flex-col items-center w-full")}>
+      <section class="w-full">
+        <h1 class="block mb-2 text-sm font-poppins-regular text-black dark:text-gray-100">
+          {label}
+        </h1>
         <input
-          placeholder={label}
           class={cn(
-            "transition-all w-[90%] h-12 pl-3 outline-none resize-none rounded-xl font-poppins-regular",
-            "dark:bg-dark-200 dark:ring-dark-100 dark:text-gray-200 dark:placeholder:text-gray-200",
+            "transition-all w-full h-10 pl-3 outline-none resize-none rounded-xl font-poppins-regular",
+            "dark:bg-dark-100 dark:ring-dark-100 dark:text-gray-200 dark:placeholder:text-gray-200",
             "bg-gray-100 ring-gray-200 text-black placeholder:text-black",
-            "ring-2 border-2 border-solid border-gray-100 dark:border-dark-100 focus:ring-opacity-40 focus:placeholder:opacity-0 hover:border-opacity-40 focus:border-opacity-0 dark:focus:ring-opacity-40 dark:focus:placeholder:opacity-0 dark:hover:border-opacity-40 dark:focus:border-opacity-0",
+            "ring-2 border-2 border-solid border-gray-100 dark:border-dark-100 focus:ring-opacity-40 hover:border-opacity-40 focus:border-opacity-0 dark:focus:ring-opacity-40 dark:hover:border-opacity-40 dark:focus:border-opacity-0",
             errorActive
               ? "bg-red-400 bg-opacity-10 dark:bg-red-400 dark:bg-opacity-10"
               : "hover:border-blue-600 dark:hover:border-blue-600 focus:ring-blue-600 dark:focus:ring-blue-600"
@@ -43,27 +45,7 @@ const FormInput = defineComponent({
           type={type}
           onInput={(event: any) => $emit("change", event.target.value)}
         />
-      </div>
-    );
-  },
-});
-
-const FormParagraph = defineComponent({
-  name: "FormParagraph",
-  props: {
-    to: {
-      type: String,
-      default: "/",
-    },
-  },
-  render() {
-    return h(
-      <router-link
-        to={this.$props.to}
-        class="transition-all opacity-60 hover:opacity-80 text-black dark:text-gray-200 font-rubik-regular"
-      >
-        {this.$slots.default ? this.$slots.default() : []}
-      </router-link>
+      </section>
     );
   },
 });
@@ -71,11 +53,7 @@ const FormParagraph = defineComponent({
 const FormButton = defineComponent({
   name: "FormButton",
   props: {
-    icon: {
-      type: [String, Object, Function],
-      default: null,
-    },
-    active: {
+    isActive: {
       type: Boolean,
       default: false,
     },
@@ -91,7 +69,7 @@ const FormButton = defineComponent({
   emits: ["click"],
   setup(props) {
     const handleKeyPress = (event: KeyboardEvent) => {
-      if (event.key === props.keypress && props.active) {
+      if (event.key === props.keypress && props.isActive) {
         const button = document.getElementById(
           "FormButton"
         ) as HTMLButtonElement;
@@ -110,24 +88,48 @@ const FormButton = defineComponent({
     });
   },
   render() {
-    const { keypress, icon, label, active } = this;
+    const { keypress, label, isActive } = this.$props;
+    console.log(label.length * 20);
     return h(
       <button
         id="FormButton"
         accesskey={keypress}
         onClick={() => this.$emit("click")}
         class={cn(
-          "transition-all relative flex items-center h-[60px] w-[60px] group pl-3.5 rounded-xl bg-blue-600",
+          "transition-all relative flex justify-between mb-3 pl-3.5 items-center h-[60px] group rounded-xl bg-blue-600",
           {
-            "pointer-events-auto": active,
-            "pointer-events-none opacity-80": !active,
+            "pointer-events-auto hover:bg-opacity-80": isActive,
+            "pointer-events-none opacity-80": !isActive,
           }
         )}
+        style={{
+          width: isActive
+            ? `${label.length < 6 ? label.length * 20 : label.length * 16}px`
+            : "60px",
+        }}
       >
-        {icon}
-        <span class="transition-all absolute right-0 pr-3.5 opacity-0 group-hover:opacity-100 text-lg font-poppins-regular text-gray-100">
+        <svg
+          class="w-[32px] h-[32px] text-gray-100"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M5 12H19M19 12L13 6M19 12L13 18"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+        <h1
+          class={cn(
+            "transition-all absolute right-0 text-lg font-poppins-regular text-gray-100",
+            isActive ? "opacity-100 pr-3" : "opacity-0"
+          )}
+        >
           {label}
-        </span>
+        </h1>
       </button>
     );
   },
@@ -139,41 +141,33 @@ const Form = defineComponent({
     title: {
       type: String,
     },
-    top: {
-      type: [String, Object, Function],
-      default: null,
-    },
-    bottom: {
-      type: [String, Object, Function],
-      default: null,
-    },
+    className: String,
   },
   render() {
     const { store } = imports();
-    const { title, bottom, top } = this.$props;
+    const { title, className } = this.$props;
 
-    return h(
+    return (
       <div
-        class={cn(
-          "transition-all flex flex-col items-center w-[90%] h-[95%] sm:h-[90%] md:w-[420px] rounded-tr-[10%] rounded-xl ring-8 bg-gray-200 dark:bg-dark-100 ring-gray-200 dark:ring-dark-100 z-[500]",
-          {
-            "pointer-events-auto": store._isProgress >= 100,
-            "pointer-events-none": store._isProgress < 100,
-          }
-        )}
+        class={cn("transition-all flex flex-col items-center w-full z-[500]", {
+          "pointer-events-auto": store._isProgress >= 100,
+          "pointer-events-none opacity-60": store._isProgress < 100,
+        })}
       >
         <h1 class="transition-all text-black dark:text-gray-200 text-3xl font-poppins-bold pointer-events-none mt-10 mb-8">
           {title}
         </h1>
-        <div class="flex flex-col justify-between items-center h-full w-full">
-          <span class="flex flex-col gap-y-3 items-center w-full">{top}</span>
-          <span class="flex flex-col gap-y-1 items-center w-full mb-4">
-            {bottom}
-          </span>
+        <div
+          class={cn(
+            "space-y-14 w-[90%] h-[95%] sm:h-[90%] md:w-[380px]",
+            className
+          )}
+        >
+          {this.$slots.default ? this.$slots.default() : []}
         </div>
       </div>
     );
   },
 });
 
-export { Form, FormInput, FormButton, FormParagraph };
+export { Form, FormInput, FormButton };

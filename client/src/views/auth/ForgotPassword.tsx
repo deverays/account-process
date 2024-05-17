@@ -1,19 +1,9 @@
-/**Vue */
 import { defineComponent } from "vue";
-
-/**Utils */
 import imports from "../../utils/imports";
 
-/**Components */
 import BoxAnimation from "../../components/animations/BoxAnimation";
-import {
-  Form,
-  FormInput,
-  FormButton,
-  FormParagraph,
-} from "../../components/ui/form";
+import { Form, FormInput, FormButton } from "../../components/ui/form";
 
-/**Auth */
 import { validateUsername } from "../../utils/auth/validator";
 
 export default defineComponent({
@@ -34,9 +24,9 @@ export default defineComponent({
     const onForgotPassword = async () => {
       store._isProgress = 40;
       try {
-        await postReq("/auth/forgot-password", {
+        await postReq("/forgot-password", {
           username: state.username,
-          ref: `http://${window.location.host}/password-reset/:code?ref=${
+          ref: `${window.location.origin}/auth/password-reset/:code?ref=${
             route.query.ref || "/"
           }`,
         });
@@ -57,10 +47,9 @@ export default defineComponent({
       <div v-motion-slide-visible-once-right>
         <BoxAnimation class="fixed" />
         <div class="flex justify-center items-center h-dvh w-dvw">
-          <Form
-            class="md:h-[450px]"
-            top={
-              step <= 0 ? (
+          <Form title={this.$t("Form.ForgotPasswordForm.title")}>
+            <section class="flex flex-col items-center gap-y-4">
+              {step <= 0 ? (
                 <FormInput
                   errorActive={errorStatus == 404}
                   onChange={(item) => (this.state.username = item)}
@@ -71,41 +60,24 @@ export default defineComponent({
                 <p class="text-3xl text-gray-200 font-poppins-regular text-center w-[90%]">
                   {this.$t("Form.ForgotPasswordForm.message")}
                 </p>
-              )
-            }
-            bottom={
-              <>
-                {step <= 0 && (
-                  <FormButton
-                    class="hover:w-32 lg:hover:w-[110px] mb-5"
-                    label={this.$t("Form.ForgotPasswordForm.Button.reset")}
-                    active={buttonActive}
-                    onClick={this.onForgotPassword}
-                    icon={
-                      <svg
-                        class="w-[32px] h-[32px] text-gray-100"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M5 12H19M19 12L13 6M19 12L13 18"
-                          stroke="currentColor"
-                          stroke-width="2"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        />
-                      </svg>
-                    }
-                  />
-                )}
-                <FormParagraph to="/auth/login">
-                  {this.$t("Form.ForgotPasswordForm.Button.login")}
-                </FormParagraph>
-              </>
-            }
-            title={this.$t("Form.ForgotPasswordForm.title")}
-          />
+              )}
+            </section>
+            <section class="flex flex-col gap-y-1 items-center w-full">
+              {step <= 0 && (
+                <FormButton
+                  label={this.$t("Form.ForgotPasswordForm.Button.reset")}
+                  isActive={buttonActive}
+                  onClick={this.onForgotPassword}
+                />
+              )}
+              <router-link
+                to="/auth/login"
+                class="transition-all text-center opacity-60 hover:opacity-80 text-black dark:text-gray-200 font-rubik-regular"
+              >
+                {this.$t("Form.ForgotPasswordForm.Button.login")}
+              </router-link>
+            </section>
+          </Form>
         </div>
       </div>
     );
