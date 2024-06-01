@@ -1,0 +1,63 @@
+.form-connection-button {
+    @apply relative transition-all flex items-center justify-center w-full rounded-lg py-3 px-4;
+}
+
+.form-connection-inner {
+    @apply transition-all p-3 rounded-full ring-4 bg-opacity-80 ring-opacity-30 text-opacity-80 bg-blue-500 ring-blue-500 text-gray-100;
+}
+
+.form-bottom-button {
+    @apply transition-all text-center font-regular text-base opacity-60 hover:opacity-100;
+}
+
+.form-text {
+    @apply flex items-center justify-center transition-all pointer-events-none text-lg text-center w-[80%];
+}
+
+.form-submit-button {
+    @apply transition-all px-6 py-3 rounded-lg font-bold text-gray-100;
+}
+
+.form-input-container {
+    @apply transition-all flex flex-col gap-y-1.5 w-full;
+}
+
+.form-input-label {
+    @apply pointer-events-none pl-1 font-regular text-[15px] opacity-90;
+}
+
+.form-input {
+    @apply transition-all opacity-80 focus:opacity-100 flex items-center rounded-lg outline-none resize-none w-full p-2 font-regular border-2 ring-4 border-solid ring-transparent border-transparent hover:ring-opacity-10 focus:ring-opacity-10 hover:ring-blue-500 focus:ring-blue-500 hover:border-blue-500 focus:border-blue-500 hover:border-opacity-40 focus:border-opacity-40;
+}
+
+.form-pin-input {
+    @apply transition-all opacity-80 focus:opacity-100 outline-none resize-none block w-14 h-14 text-base text-center rounded-xl font-regular border-2 ring-4 border-solid ring-transparent border-transparent hover:ring-opacity-10 focus:ring-opacity-10 hover:ring-blue-500 focus:ring-blue-500 hover:border-blue-500 focus:border-blue-500 hover:border-opacity-40 focus:border-opacity-40
+}
+
+.form-pin-input-container {
+    @apply transition-all flex place-items-center place-content-center gap-x-4
+}
+
+.form-menu-container {
+    @apply transition-all animate-fade-down animate-once animate-duration-300 animate-ease-out w-[90%] max-sm:h-[95%] pt-12 pb-8 sm:w-96 rounded-3xl px-4 ring-4;
+}
+
+.form-menu-content {
+    @apply w-[90%] sm:w-80;
+}
+
+.form-menu-text {
+    @apply transition-all flex flex-col items-center mb-6 scale-110 w-full;
+}
+
+.form-menu-title {
+    @apply text-center text-2xl font-bold w-[90%];
+}
+
+.form-menu-description {
+    @apply text-center text-base opacity-60 font-regular w-[90%];
+}
+
+.form-menu-connection-content {
+    @apply flex flex-col w-full items-center;
+}

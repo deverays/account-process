@@ -1,0 +1,7 @@
+.form-container {
+    @apply transition-all flex items-center justify-center font-regular text-center w-[90%] text-gray-100 bg-red-500 pointer-events-none z-[999]
+}
+
+.form-container-content {
+    @apply flex flex-col items-center justify-center h-dvh w-full
+}

@@ -1,35 +1,20 @@
-import useStore from "../store";
-import { postReq, getReq } from "./axiosReqs";
-import { useRoute, useRouter } from "vue-router";
-import {
-    watchEffect,
-    watch,
-    reactive,
-    defineEmits,
-    onMounted,
-    ref,
-    computed,
-    onUnmounted,
-} from "vue";
-import i18next from "i18next";
+import { ref, reactive, watch, watchEffect } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { getReq, postReq } from './axiosReqs'
+import useStore from '@/store'
 export default () => {
-    const store = useStore();
-    const route = useRoute();
-    const router = useRouter();
+    const route = useRoute()
+    const router = useRouter()
+    const store = useStore()
     return {
-        store,
+        ref,
+        reactive,
+        watch,
+        watchEffect,
         route,
         router,
-        watch,
-        reactive,
-        defineEmits,
-        watchEffect,
-        postReq,
+        store,
         getReq,
-        onMounted,
-        ref,
-        computed,
-        onUnmounted,
-        i18next,
-    };
-};
+        postReq
+    }
+}

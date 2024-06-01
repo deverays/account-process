@@ -1,0 +1,139 @@
+{
+    "dropdown": {
+        "user-dropdown": {
+            "button": {
+                "language": "Language",
+                "theme": "Theme",
+                "premium": "Premium",
+                "support": "Support",
+                "logout": "Log out"
+            },
+            "title": {
+                "settings": "Settings"
+            },
+            "theme": {
+                "system": "System",
+                "dark": "Dark",
+                "light": "Light"
+            },
+            "circle": {
+                "signin": "Signin",
+                "signup": "Signup",
+                "settings": "Settings",
+                "self": "Profile"
+            }
+        }
+    },
+    "form": {
+        "signin-form": {
+            "title": "Sign In",
+            "description": "Welcome back",
+            "button": {
+                "signin": "Sign In",
+                "send": "Send"
+            },
+            "input": {
+                "username": "Username",
+                "password": "Password",
+                "code": "Code",
+                "error": {
+                    "username": "No account found matching the username entered",
+                    "password": "The password entered does not match the account password",
+                    "code": "The code does not match the code sent to the email."
+                }
+            },
+            "other": {
+                "signup": "Don't have an account? Sign Up",
+                "recovery": "Having trouble signing in?"
+            }
+        },
+        "signup-form": {
+            "title": "Create Account",
+            "description": "Enjoy your journey",
+            "input": {
+                "username": "Username",
+                "email": "Email",
+                "password": "Password",
+                "password-again": "Password Again",
+                "error": {
+                    "password": "X",
+                    "email": "This email is already in use",
+                    "username": "This username is already in use"
+                }
+            },
+            "button": {
+                "signup": "Create Account"
+            },
+            "other": {
+                "signin": "Already have an account? Sign In",
+                "recovery": "Having trouble creating an account?"
+            }
+        },
+        "forgot-username-form": {
+            "title": "Forgot Username",
+            "description": "Forgot your username? You're at the right place",
+            "message": "Successfully sent your username to your email address",
+            "input": {
+                "email": "Email",
+                "error": {
+                    "email": "No account found matching the email entered"
+                }
+            },
+            "button": {
+                "send": "Send"
+            },
+            "other": {
+                "signin": "Remembered your username? Sign In"
+            }
+        },
+        "forgot-password-form": {
+            "title": "Forgot Password",
+            "description": "Enter your username in the field below to reset your password",
+            "message": "Successfully sent the password reset link to your email address",
+            "input": {
+                "username": "Username",
+                "error": {
+                    "username": "No account found matching the username entered"
+                }
+            },
+            "button": {
+                "send": "Send"
+            },
+            "other": {
+                "signin": "Remembered your password? Sign In"
+            }
+        },
+        "refresh-password-form": {
+            "title": "Reset Your Password",
+            "description": "Enter your new password in the entries below",
+            "err-message": "Your password cracking code has expired or you are trying to reset your password with the wrong password reset code.",
+            "input": {
+                "password": "Password",
+                "password-again": "Password Again",
+                "error": {
+                    "password": "Your password is the same as your old password"
+                }
+            },
+            "button": {
+                "refresh": "Refresh"
+            },
+            "other": {
+                "signin": "Do you remember your password? Sign in"
+            }
+        }
+    },
+    "recovery": {
+        "title": "Can't LOG IN?",
+        "description": "There may be more than one reason why you cannot log in. Check out the options below to see possible solutions.",
+        "card": {
+            "forgot-password": {
+                "title": "Forgot your password?",
+                "description": "If you forgot your password, you can reset it here."
+            },
+            "forgot-username": {
+                "title": "Forgot your username?",
+                "description": "Need help remembering? Here you can request a reminder to be sent to the email address linked to your account."
+            }
+        }
+    }
+}

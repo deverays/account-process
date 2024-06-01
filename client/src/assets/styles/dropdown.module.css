@@ -1,0 +1,31 @@
+.dropdown-desktop-menu {
+    @apply transition-all absolute rounded-2xl py-2 border-2 border-solid;
+}
+
+.dropdown-mobile-menu {
+    @apply fixed inset-x-0 bottom-0 transition-all w-dvw rounded-t-3xl border-2 border-solid py-0.5;
+}
+
+.dropdown-item {
+    @apply transition-all flex items-center gap-x-2 pl-4 font-regular w-full rounded-lg py-2 text-[14px];
+}
+
+.dropdown-menu-title {
+    @apply transition-all flex items-center pl-4 font-bold w-full my-1 text-[14px] opacity-90;
+}
+
+.dropdown-circle-button {
+    @apply relative transition-all flex items-center justify-center w-full rounded-lg py-2;
+}
+
+.circle-button-content {
+    @apply flex flex-col items-center justify-center gap-y-2.5;
+}
+
+.circle-button-icon {
+    @apply transition-all p-3 rounded-full ring-4;
+}
+
+.circle-button-label {
+    @apply transition-all opacity-70 text-sm font-regular;
+}

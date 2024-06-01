@@ -1,4 +1,4 @@
-import jwt from "jsonwebtoken"
+import crypto from "crypto";
 
 /**
  * Secret key used for generating access tokens.
@@ -6,19 +6,9 @@ import jwt from "jsonwebtoken"
 const secretKey: string = "id_secret";
 
 const generateId = (user: object): string => {
-    const id: string = String.fromCharCode(...jwt.sign(user, secretKey, { expiresIn: "15m" }).split('').map(c => c.charCodeAt(0)));
+    const randomKey = crypto.randomBytes(8).toString("hex");
 
-    return id;
+    return randomKey;
 };
 
-const verifyId = (token: string): any => {
-    try {
-        const decoded: any = jwt.verify(token, secretKey);
-
-        return decoded;
-    } catch (error) {
-        return false;
-    }
-};
-
-export { generateId, verifyId };
+export { generateId };

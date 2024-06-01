@@ -1,173 +1,133 @@
-/**Vue */
-import { defineComponent, onMounted, onUnmounted, h } from "vue";
+import { defineComponent, h, ref, type PropType, type Ref } from 'vue'
+import { RouterLink } from 'vue-router'
+import { cn, renderSvg } from '@/lib/utilts'
+import { svgIcons } from '@/lib/icons'
 
-/**Lib */
-import { cn } from "../../lib/utilts";
+import styles from '@/assets/styles/form.module.css'
 
-/**Utils */
-import imports from "../../utils/imports";
+// Form Connection Button
+export const FormConnectionButton = defineComponent({
+  emits: ['click'],
+  setup(_, { emit }) {
+    return () =>
+      h('button', { class: cn(styles['form-connection-button'], 'hover:bg-light-300 dark:hover:bg-dark-700'), onClick: () => emit('click') },
+        h('div', { class: cn(styles['form-connection-inner'], 'group-hover:bg-opacity-100 group-hover:ring-opacity-40 group-hover:text-opacity-100') }, [renderSvg({ ...svgIcons.discord, className: 'w-5 h-5' })])
+      )
+  }
+})
 
-const FormInput = defineComponent({
-  name: "FormInput",
+// Form Bottom Button
+export const FormBottomButton = defineComponent({
   props: {
-    label: {
-      type: String,
-      default: "Default Form Label",
-    },
-    type: {
-      type: String,
-      default: "text",
-    },
-    errorActive: {
-      type: Boolean,
-      default: false,
-    },
+    to: { type: String, required: true }
   },
-  emits: ["change"],
-  render() {
-    const { label, errorActive, type, $emit } = this;
+  setup(props, { slots }) {
+    return () => h(RouterLink, { to: props.to, class: cn(styles['form-bottom-button'], 'text-black dark:text-gray-100') }, { default: () => (slots.default ? slots.default() : []) })
+  }
+})
 
-    return h(
-      <section class="w-full">
-        <h1 class="block mb-2 text-sm font-poppins-regular text-black dark:text-gray-100">
-          {label}
-        </h1>
-        <input
-          class={cn(
-            "transition-all w-full h-10 pl-3 outline-none resize-none rounded-xl font-poppins-regular",
-            "dark:bg-dark-100 dark:ring-dark-100 dark:text-gray-200 dark:placeholder:text-gray-200",
-            "bg-gray-100 ring-gray-200 text-black placeholder:text-black",
-            "ring-2 border-2 border-solid border-gray-100 dark:border-dark-100 focus:ring-opacity-40 hover:border-opacity-40 focus:border-opacity-0 dark:focus:ring-opacity-40 dark:hover:border-opacity-40 dark:focus:border-opacity-0",
-            errorActive
-              ? "bg-red-400 bg-opacity-10 dark:bg-red-400 dark:bg-opacity-10"
-              : "hover:border-blue-600 dark:hover:border-blue-600 focus:ring-blue-600 dark:focus:ring-blue-600"
-          )}
-          type={type}
-          onInput={(event: any) => $emit("change", event.target.value)}
-        />
-      </section>
-    );
-  },
-});
-
-const FormButton = defineComponent({
-  name: "FormButton",
+// Form Text
+export const FormText = defineComponent({
   props: {
-    isActive: {
-      type: Boolean,
-      default: false,
-    },
-    keypress: {
-      type: String,
-      default: "Enter",
-    },
-    label: {
-      type: String,
-      default: "Default Label",
-    },
+    isOpen: { type: Boolean, default: false }
   },
-  emits: ["click"],
-  setup(props) {
-    const handleKeyPress = (event: KeyboardEvent) => {
-      if (event.key === props.keypress && props.isActive) {
-        const button = document.getElementById(
-          "FormButton"
-        ) as HTMLButtonElement;
-        if (button) {
-          button.click();
-        }
+  setup(props, { slots }) {
+    return () => props.isOpen && <span v-motion-slide-visible-once-bottom class="w-full"><p class={cn(styles['form-text'], 'text-black dark:text-gray-100')}>{slots.default ? slots.default() : []}</p></span>
+  }
+})
+
+// Form Submit Button
+export const FormSubmitButton = defineComponent({
+  emits: ['click'],
+  props: {
+    isActive: { type: Boolean, default: false },
+    isShow: { type: Boolean, default: true }
+  },
+  setup(props, { emit, slots }) {
+    return () => h('button', { class: cn(styles['form-submit-button'], 'bg-blue-600 hover:bg-blue-700 dark:hover:bg-gray-100 dark:hover:text-blue-600', props.isActive ? 'pointer-events-auto cursor-pointer' : 'pointer-events-none opacity-80'), onClick: () => emit('click') }, slots.default ? slots.default() : [])
+  }
+})
+
+// Form Pin Input
+export const FormPinInput = defineComponent({
+  props: {
+    isShow: { type: Boolean, default: true },
+    length: { type: Number, default: 4 }
+  },
+  emits: ['change'],
+  setup(props, { emit }) {
+    const values: Ref<string[]> = ref(Array(props.length).fill(''))
+
+    const handleInput = (event: Event, index: number) => {
+      const input = event.target as HTMLInputElement
+      const value = input.value
+
+      if (value.length <= 1) { values.value[index] = value } else { values.value[index] = value[0] }
+
+      emit('change', values.value.join(''))
+
+      if (value.length == 1 && index < props.length - 1) {
+        const nextInput = document.getElementById(`code-${index + 2}`) as HTMLInputElement
+        if (nextInput) nextInput.focus()
+      } else if (value == '' && index > 0) {
+        const prevInput = document.getElementById(`code-${index}`) as HTMLInputElement
+        if (prevInput) prevInput.focus()
       }
-    };
+    }
 
-    onMounted(() => {
-      window.addEventListener("keyup", handleKeyPress);
-    });
+    const inputs = Array.from({ length: props.length }, (_, i) => {
+      return h('input', { type: 'text', maxlength: 1, id: `code-${i + 1}`, class: cn(styles['form-pin-input'], 'text-opacity-80 dark:text-opacity-90 bg-light-100 dark:bg-dark-800 dark:border-dark-700 text-black dark:text-gray-100'), required: true, onInput: (event: Event) => handleInput(event, i) })
+    })
 
-    onUnmounted(() => {
-      window.removeEventListener("keyup", handleKeyPress);
-    });
-  },
-  render() {
-    const { keypress, label, isActive } = this.$props;
-    console.log(label.length * 20);
-    return h(
-      <button
-        id="FormButton"
-        accesskey={keypress}
-        onClick={() => this.$emit("click")}
-        class={cn(
-          "transition-all relative flex justify-between mb-3 pl-3.5 items-center h-[60px] group rounded-xl bg-blue-600",
-          {
-            "pointer-events-auto hover:bg-opacity-80": isActive,
-            "pointer-events-none opacity-80": !isActive,
-          }
-        )}
-        style={{
-          width: isActive
-            ? `${label.length < 6 ? label.length * 20 : label.length * 16}px`
-            : "60px",
-        }}
-      >
-        <svg
-          class="w-[32px] h-[32px] text-gray-100"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M5 12H19M19 12L13 6M19 12L13 18"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-        </svg>
-        <h1
-          class={cn(
-            "transition-all absolute right-0 text-lg font-poppins-regular text-gray-100",
-            isActive ? "opacity-100 pr-3" : "opacity-0"
-          )}
-        >
-          {label}
-        </h1>
-      </button>
-    );
-  },
-});
+    return () => props.isShow && <div v-motion-slide-visible-once-bottom class="w-full">
+      <div class={cn(styles['form-pin-input-container'])}>{inputs}</div>
+    </div>
+  }
+})
 
-const Form = defineComponent({
-  name: "Form",
+// Form Input
+export const FormInput = defineComponent({
   props: {
-    title: {
-      type: String,
-    },
-    className: String,
+    label: { type: String, required: true },
+    type: { type: String as PropType<'text' | 'password' | 'email' | 'number'>, required: true },
+    isShow: { type: Boolean, default: true }
   },
-  render() {
-    const { store } = imports();
-    const { title, className } = this.$props;
+  emits: ['change'],
+  setup(props, { emit }) {
+    const inputValue = ref('')
 
-    return (
-      <div
-        class={cn("transition-all flex flex-col items-center w-full z-[500]", {
-          "pointer-events-auto": store._isProgress >= 100,
-          "pointer-events-none opacity-60": store._isProgress < 100,
-        })}
-      >
-        <h1 class="transition-all text-black dark:text-gray-200 text-3xl font-poppins-bold pointer-events-none mt-10 mb-8">
-          {title}
-        </h1>
-        <div
-          class={cn(
-            "space-y-14 w-[90%] h-[95%] sm:h-[90%] md:w-[380px]",
-            className
-          )}
-        >
-          {this.$slots.default ? this.$slots.default() : []}
-        </div>
-      </div>
-    );
+    const handleInput = (event: Event) => {
+      const target = event.target as HTMLInputElement
+      inputValue.value = target.value
+      emit('change', target.value)
+    }
+
+    return () => props.isShow && <div v-motion-slide-visible-once-bottom class="w-full">
+      <div class={cn(styles['form-input-container'])}>{[h('label', { class: cn(styles['form-input-label'], 'text-black dark:text-gray-100') }, props.label), h('input', { type: props.type, value: inputValue.value, class: cn(styles['form-input'], 'focus:opacity-100 dark:border-dark-700 text-opacity-80 dark:text-opacity-90 bg-light-100 dark:bg-dark-800 text-black dark:text-gray-100'), onInput: handleInput })]}</div>
+    </div>
+  }
+})
+
+// Form Menu
+export const FormMenu = defineComponent({
+  props: {
+    title: { type: String, required: true, default: '' },
+    description: { type: String, required: true, default: '' },
+    links: { type: Array as PropType<string[]>, default: () => [] }
   },
-});
-
-export { Form, FormInput, FormButton };
+  setup(props, { slots }) {
+    return () => h('div', { class: cn(styles['form-menu-container'], 'bg-light-200 dark:bg-dark-900 ring-light-300 dark:ring-dark-800') },
+      [h('div', { class: styles['form-menu-connection-content'] }, [props.links.includes('discord') &&
+        h('div', { class: 'mb-4' }, [
+          h(FormConnectionButton, { onClick: () => (window.location.href = import.meta.env.VITE_DISCORD_OAUTH2_URL) })
+        ]),
+      h('div', { class: cn(styles['form-menu-text'], 'text-black dark:text-gray-100') }, [
+        h('h1', { class: styles['form-menu-title'] }, props.title),
+        h('p', { class: styles['form-menu-description'] }, props.description)
+      ]),
+      h('div', { class: styles['form-menu-content'] }, slots.default ? slots.default() : [])
+      ])
+      ]
+    )
+  }
+})

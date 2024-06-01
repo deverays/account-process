@@ -1,28 +1,19 @@
-/**Vue */
-import { defineComponent, h } from "vue";
+import { Fragment, defineComponent, h } from 'vue'
+import { cn } from '@/lib/utilts'
 
-/**Lib */
-import { cn } from "../lib/utilts";
+import styles from '@/assets/styles/container.module.css'
 
-/**Components */
-import { AppHeader } from "../components/Header";
-
-export const AppContainer = defineComponent({
-  props: { className: String },
-  render() {
-    return h(
-      <>
-        <AppHeader />
-        <div
-          class={cn(
-            "transition-all duration-700 flex flex-col items-center mb-20 mt-16 lg:mt-20 w-dvw"
-          )}
-        >
-          <div v-motion-slide-visible-once-left class={this.className}>
-            {this.$slots.default ? this.$slots.default() : null}
-          </div>
-        </div>
-      </>
-    );
+// Form Container
+export const FormContainer = defineComponent({
+  props: {
+    isError: { type: Boolean, default: false },
+    message: { type: String, default: '' }
   },
-});
+  setup(props, { slots }) {
+    return () =>
+      h(Fragment, [
+        h('header', { class: cn(styles['form-container'], props.isError ? 'opacity-100 translate-y-0 py-3' : 'opacity-0 -translate-y-full') }, props.message),
+        h('div', { class: styles['form-container-content'] }, slots.default ? slots.default() : [])
+      ])
+  }
+})

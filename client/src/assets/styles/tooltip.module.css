@@ -1,0 +1,3 @@
+.bottom-tooltip {
+    @apply data-[tooltip]:after:z-50 data-[tooltip]:after:mt-1 data-[tooltip]:after:font-regular data-[tooltip]:after:content-[attr(data-tooltip)] data-[tooltip]:after:text-[14px] data-[tooltip]:after:invisible data-[tooltip]:after:origin-top data-[tooltip]:after:opacity-0 hover:data-[tooltip]:after:visible hover:data-[tooltip]:after:opacity-100 hover:data-[tooltip]:after:scale-100 data-[tooltip]:after:transition-all data-[tooltip]:after:absolute data-[tooltip]:after:top-[calc(100%+4px)] data-[tooltip]:after:px-2.5 data-[tooltip]:after:py-1 data-[tooltip]:after:rounded-md
+}

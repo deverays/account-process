@@ -1,97 +1,81 @@
-import { defineComponent, PropType, h } from "vue";
-import { cn } from "../../lib/utilts";
+import { defineComponent, h, ref, onMounted, onBeforeUnmount, type PropType } from 'vue'
+import { cn } from '@/lib/utilts'
+import { RouterLink } from 'vue-router'
+import styles from '@/assets/styles/dropdown.module.css'
 
-const Dropdown = defineComponent({
+// Dropdown Menu
+export const DropdownMenu = defineComponent({
   props: {
-    isOpen: {
-      type: Boolean,
-      default: false,
-    },
-    className: {
-      type: String,
-      default: "right-0 z-20 w-[228px] py-1.5",
-    },
+    isOpen: { type: Boolean, default: false },
+    className: { type: String, default: '' }
   },
-  render() {
-    return h(
-      <div
-        class={cn(
-          this.className,
-          "transition-all absolute rounded-lg bg-light-300 dark:bg-dark-300",
-          this.isOpen
-            ? "opacity-100 top-[calc(100%+8px)] pointer-events-auto"
-            : "opacity-0 top-[calc(100%-24px)] pointer-events-none"
-        )}
-      >
-        {this.$slots.default ? this.$slots.default() : []}
-      </div>
-    );
-  },
-});
+  setup(props, { slots }) {
+    const isMobile = ref(window.innerWidth < 400)
 
-const DropdownButton = defineComponent({
+    const checkIsMobile = () => {
+      isMobile.value = window.innerWidth < 400
+    }
+
+    onMounted(() => window.addEventListener('resize', checkIsMobile))
+    onBeforeUnmount(() => window.removeEventListener('resize', checkIsMobile))
+
+    const renderMenu = (type: 'desktop' | 'mobile') => {
+      const baseClass = type === 'desktop' ? styles['dropdown-desktop-menu'] : styles['dropdown-mobile-menu']
+      const openClass = type === 'desktop' ? 'opacity-100 top-[calc(100%+8px)]' : 'opacity-100 translate-y-0'
+      const closeClass = type === 'desktop' ? 'opacity-0 top-[calc(100%-24px)]' : 'opacity-0 translate-y-full'
+
+      return h('div', { class: cn(props.className, baseClass, 'bg-light-200 dark:bg-dark-900 border-light-300 dark:border-dark-800', props.isOpen ? openClass : closeClass, props.isOpen ? 'pointer-events-auto' : 'pointer-events-none') }, slots.default ? slots.default() : [])
+    }
+
+    return () => (isMobile.value ? renderMenu('mobile') : renderMenu('desktop'))
+  }
+})
+
+// Dropdown Item
+export const DropdownItem = defineComponent({
+  emits: ['click'],
   props: {
-    onClick: Function as PropType<() => void>,
-    to: String,
-    redirect: String,
-    className: {
-      type: String,
-      default: "w-[94%]",
-    },
+    id: { type: String, default: '' },
+    to: { type: String, default: '' }
   },
-  setup() {
-    const getClassNames = (customClassName: string) => {
-      return cn(
-        "transition-all flex items-center justify-start m-auto rounded-md py-2 pl-3 space-x-2 font-poppins-regular text-sm opacity-80 hover:opacity-100 hover:bg-opacity-60 text-black dark:text-gray-100 hover:bg-light-100 dark:hover:bg-dark-100",
-        customClassName
-      );
-    };
+  setup(props, { emit, slots }) {
+    const handleClick = () => emit('click')
 
-    return { getClassNames };
+    const baseClasses = cn(styles['dropdown-item'], 'hover:bg-light-300 hover:dark:bg-dark-700 text-opacity-60 hover:text-opacity-100 dark:text-opacity-60 dark:hover:text-opacity-100 text-black dark:text-gray-100')
+
+    const buttonContent = { default: () => [slots.default ? slots.default() : []] }
+
+    return () =>
+      props.to ? h(RouterLink, { class: baseClasses, id: props.id, to: props.to }, buttonContent) : h('button', { class: baseClasses, id: props.id, onClick: handleClick }, buttonContent)
+  }
+})
+
+// Dropdown Menu Title
+export const DropdownMenuTitle = defineComponent({
+  setup(_, { slots }) {
+    return () => h('h1', { class: cn(styles['dropdown-menu-title'], 'text-black dark:text-gray-100') }, slots.default ? slots.default() : [])
+  }
+})
+
+// Dropdown Circle Button
+export const DropdownCircleButton = defineComponent({
+  emits: ['click'],
+  props: {
+    label: { type: String, default: '' },
+    to: { type: String, default: '' }
   },
-  render() {
-    const slotContent = this.$slots.default ? this.$slots.default() : [];
+  setup(props, { emit, slots }) {
+    const handleClick = () => emit('click')
 
-    if (this.$props.to)
-      return h(
-        <router-link
-          class={cn(this.getClassNames(this.$props.className))}
-          to={this.$props.to}
-        >
-          {slotContent}
-        </router-link>
-      );
+    const circleContent = () =>
+      h('div', { class: cn(styles['circle-button-content'], 'group') }, [
+        h('div', { class: cn(styles['circle-button-icon'], 'opacity-60 group-hover:opacity-100 bg-light-300 ring-light-300 dark:bg-dark-700 dark:ring-dark-700 text-black dark:text-gray-100') }, slots.default ? slots.default() : []),
+        h('p', { class: cn(styles['circle-button-label'], 'group-hover:opacity-100 text-black dark:text-gray-100') }, props.label)
+      ])
 
-    if (this.$props.redirect)
-      return h(
-        <button
-          class={cn(this.getClassNames(this.$props.className))}
-          onClick={() => (location.href = this.$props.redirect as string)}
-        >
-          {slotContent}
-        </button>
-      );
+    const baseClasses = cn(styles['dropdown-circle-button'], 'group hover:bg-light-100 dark:hover:bg-dark-500')
 
-    if (this.$props.onClick)
-      return h(
-        <button
-          class={cn(this.getClassNames(this.$props.className))}
-          onClick={this.$props.onClick}
-        >
-          {slotContent}
-        </button>
-      );
-  },
-});
-
-const DropdownTitle = defineComponent({
-  render() {
-    return h(
-      <h1 class="transition-all m-auto w-[94%] py-1.5 pl-3 text-sm font-poppins-bold opacity-95 text-black dark:text-gray-100">
-        {this.$slots.default ? this.$slots.default() : []}
-      </h1>
-    );
-  },
-});
-
-export { Dropdown, DropdownButton, DropdownTitle };
+    return () =>
+      props.to ? h(RouterLink, { class: baseClasses, to: props.to }, { default: circleContent }) : h('button', { class: baseClasses, onClick: handleClick }, circleContent())
+  }
+})

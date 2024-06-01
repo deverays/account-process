@@ -1,0 +1,139 @@
+{
+    "dropdown": {
+        "user-dropdown": {
+            "button": {
+                "language": "Dil",
+                "theme": "Tema",
+                "premium": "Ayrıcalık",
+                "support": "Destek",
+                "logout": "Çıkış Yap"
+            },
+            "title": {
+                "settings": "Ayarlar"
+            },
+            "theme": {
+                "system": "Sistem",
+                "dark": "Koyu",
+                "light": "Açık"
+            },
+            "circle": {
+                "signin": "Giriş",
+                "signup": "Kayıt",
+                "settings": "Ayarlar",
+                "self": "Profil"
+            }
+        }
+    },
+    "form": {
+        "signin-form": {
+            "title": "Giriş Yap",
+            "description": "Tekrar hoşgeldin",
+            "button": {
+                "signin": "Giriş Yap",
+                "send": "Gönder"
+            },
+            "input": {
+                "username": "Kullanıcı Adı",
+                "password": "Şifre",
+                "code": "Kod",
+                "error": {
+                    "username": "Girdiğiniz kullanıcı adı ile eşleşen bir hesap bulunamadı",
+                    "password": "Girdiğiniz şifre hesap şifresiyle eşleşmiyor.",
+                    "code": "Kod, e-postaya gönderilen kodla eşleşmiyor."
+                }
+            },
+            "other": {
+                "signup": "Hesabın yok mu? Kayıt Ol",
+                "recovery": "Giriş yapamıyor musun?"
+            }
+        },
+        "signup-form": {
+            "title": "Hesap Oluştur",
+            "description": "Keyifli gezintiler",
+            "input": {
+                "username": "Kullanıcı Adı",
+                "email": "E-posta",
+                "password": "Şifre",
+                "password-again": "Şifre Tekrar",
+                "error": {
+                    "password": "X",
+                    "email": "Bu e-posta zaten kullanılıyor.",
+                    "username": "Bu kullanıcı adı zaten kullanılıyor."
+                }
+            },
+            "button": {
+                "signup": "Hesap Oluştur"
+            },
+            "other": {
+                "signin": "Hesabın var mı? Giriş Yap",
+                "recovery": "Hesap oluşturmada sorun mu yaşıyorsunuz?"
+            }
+        },
+        "forgot-username-form": {
+            "title": "Kullanıcı Adı",
+            "description": "Kullanıcı adınızı mı unuttunuz? Doğru yerdesiniz",
+            "message": "Kullanıcı adını e-posta adresine başarıyla ilettim",
+            "input": {
+                "email": "E-posta",
+                "error": {
+                    "email": "E-posta ile eşleşen bir hesap bulunamadı"
+                }
+            },
+            "button": {
+                "send": "Gönder"
+            },
+            "other": {
+                "signin": "Kullanıcı adını hatırladın mı? Giriş Yap"
+            }
+        },
+        "forgot-password-form": {
+            "title": "Şifremi Unuttum",
+            "description": "Aşağıdaki alana kullanıcı adınızı girerek şifrenizi sıfırlayabilirsiniz",
+            "message": "Şifre sıfırlama bağlantısını e-posta adresinize başarıyla gönderdim",
+            "input": {
+                "username": "Kullanıcı Adı",
+                "error": {
+                    "username": "Girdiğiniz kullanıcı adı ile eşleşen bir hesap bulunamadı"
+                }
+            },
+            "button": {
+                "send": "Gönder"
+            },
+            "other": {
+                "signin": "Şifreni hatırladın mı? Giriş Yap"
+            }
+        },
+        "refresh-password-form": {
+            "title": "Şifreni Yenile",
+            "description": "Aşağıdaki girişlere yeni şifrenizi girin",
+            "err-message": "Şifre kırma kodunuzun süresi dolmuş veya yanlış şifre sıfırlama koduyla şifrenizi sıfırlamaya çalışıyorsunuz.",
+            "input": {
+                "password": "Şifre",
+                "password-again": "Şifre Tekrar",
+                "error": {
+                    "password": "Şifreniz eski şifrenizle aynı"
+                }
+            },
+            "button": {
+                "refresh": "Yenile"
+            },
+            "other": {
+                "signin": "Şifreni hatırladın mı? Giriş Yap"
+            }
+        }
+    },
+    "recovery": {
+        "title": "GİRİŞ YAPAMIYOR MUSUN?",
+        "description": "Giriş yapamamanın birden fazla sebebi olabilir. Olası çözümleri görmek için aşağıdaki seçeneklere göz at.",
+        "card": {
+            "forgot-password": {
+                "title": "Şifreni mi unuttun?",
+                "description": "Şifreni unuttuysan onu buradan sıfırlayabilirsin."
+            },
+            "forgot-username": {
+                "title": "Kullanıcı adını mı unuttun?",
+                "description": "Hatırlamak için yardıma mı ihtiyacın var? Buradan hesabına bağlı e-posta adresine bir hatırlatıcı gönderilmesini talep edebilirsin."
+            }
+        }
+    }
+}

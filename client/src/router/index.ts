@@ -1,73 +1,77 @@
-import { createRouter, createWebHistory } from "vue-router";
+import { createRouter, createWebHistory } from 'vue-router'
+import imports from '@/utils/imports'
+
+const publicRoutes = [
+  {
+    name: 'home',
+    path: '/',
+    component: () => import('../views/home')
+  },
+  {
+    name: 'recovery',
+    path: '/recovery',
+    component: () => import('@/views/recovery')
+  },
+  {
+    name: 'connection',
+    path: '/connection',
+    component: () => import('@/views/connection')
+  }
+]
+
+const usersRoutes = [
+  {
+    path: '/users',
+    redirect: '/recovery',
+    children: [
+      {
+        name: 'signin',
+        path: 'signin',
+        component: () => import('@/views/users/signin')
+      },
+      {
+        name: 'signup',
+        path: 'signup',
+        component: () => import('@/views/users/signup')
+      },
+      {
+        name: 'forgot-username',
+        path: 'forgot-username',
+        component: () => import('@/views/users/forgot-username')
+      },
+      {
+        name: 'forgot-password',
+        path: 'forgot-password',
+        component: () => import('@/views/users/forgot-password')
+      },
+      {
+        name: 'refresh-password',
+        path: 'refresh-password/:code',
+        component: () => import('@/views/users/refresh-password')
+      }
+    ]
+  }
+]
 
 const router = createRouter({
-    routes: [],
-    history: createWebHistory(),
-});
+  history: createWebHistory(import.meta.env.BASE_URL),
+  routes: [...publicRoutes, ...usersRoutes, { path: '/:pathMatch(.*)', redirect: '/' }]
+})
 
-router.addRoute({
-    name: "homepage",
-    path: "/",
-    component: () => import("../views/HomePage.vue"),
-});
+router.beforeEach((to, from, next) => {
+  const { store, watch } = imports()
+  document.title = import.meta.env.VITE_PROJECT_TITLE
 
-router.addRoute({
-    name: "auth",
-    path: "/auth",
-    children: [
-        {
-            name: "login",
-            path: "login",
-            component: () => import("../views/auth/Login"),
-        },
-        {
-            name: "signup",
-            path: "signup",
-            component: () => import("../views/auth/Signup"),
-        },
-        {
-            name: "forgotPassword",
-            path: "forgot-password",
-            component: () => import("../views/auth/ForgotPassword"),
-        },
-        {
-            name: "passwordReset",
-            path: "password-reset/:code",
-            component: () => import("../views/auth/PasswordReset"),
-        },
-        {
-            name: "forgotUsername",
-            path: "forgot-username",
-            component: () => import("../views/auth/ForgotUsername"),
-        },
-        {
-            name: "logout",
-            path: "logout",
-            component: () => import("../views/auth/Logout.vue"),
-        },
-    ],
-});
+  const authReq = ['signin', 'signup']
 
-router.replace(router.currentRoute.value.fullPath);
-
-router.beforeEach(async (to, from, next) => {
-    const { VITE_DISCORD_OAUTH2_URL, VITE_PROJECT_TITLE } = import.meta.env;
-    const userData = JSON.parse(localStorage.getItem("user_data") ?? "{}");
-
-    document.title = VITE_PROJECT_TITLE;
-
-    const authReq = [""];
-    const authNotReq = ["homepage"];
-
-    if (
-        !userData?.access_token &&
-        authReq.includes(to.name as string) &&
-        !authNotReq.includes(to.name as string)
-    ) {
-        location.href = VITE_DISCORD_OAUTH2_URL;
-    } else {
-        next();
+  watch(
+    () => store._isLogin,
+    (value) => {
+      if (value && authReq.includes(to.name as string)) router.push('/')
     }
-});
+  )
 
-export default router;
+  next()
+})
+
+export default router

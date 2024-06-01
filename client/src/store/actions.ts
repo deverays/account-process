@@ -1,61 +1,57 @@
-import { getReq } from "../utils/axiosReqs";
-
-interface UserData {
-    access_token?: string;
-}
+import { getReq } from '@/utils/axiosReqs'
 
 export default {
-    async initUser() {
-        const userData: UserData = JSON.parse(
-            localStorage.getItem("user_data") ?? "{}"
-        );
+  async initUser() {
+    const getUser = async () => {
+      return await getReq('/users/self')
+    }
 
-        if (!userData.access_token) {
-            (this as any)._isLoading = false;
-            return;
-        }
+    const response = await this.makeRequest(getUser).catch(() => { })
 
-        (this as any).isLoading = true;
+    if (response.data.success) {
+      delete response.data._id
+      delete response.data.message
+      delete response.data.success
 
-        const getUser = async () => {
-            return await getReq("/user");
-        };
+      localStorage.setItem(
+        'user_data',
+        JSON.stringify({
+          info: response.data,
+          ...(JSON.parse(localStorage.user_data || 'null') || {})
+        })
+      )
 
-        try {
-            const response = await this.makeRequest(getUser);
-            if (response.data.success) {
-                (this as any)._isLogin = true;
-                (this as any).getters._getUser = response.data.user_data;
-            }
-        } finally {
-            (this as any)._isLoading = false;
-        }
-    },
+        ; (this as any)._isLogin = true
+        ; (this as any).getters._getUser = response.data
+    }
+  },
 
-    async makeRequest(this: any, requestFunc: () => Promise<any>) {
-        try {
-            const response = await requestFunc();
-            return response;
-        } catch (err: any) {
-            await this.handleRateLimit(err, () => this.makeRequest(requestFunc));
-            this.handleUnauthorized();
-            throw err;
-        }
-    },
+  async makeRequest(this: any, requestFunc: () => Promise<any>) {
+    try {
+      const response = await requestFunc()
+      return response
+    } catch (err: any) {
+      await this.handleRateLimit(err, () => this.makeRequest(requestFunc))
+      this.handleUnauthorized()
+      window.location.href = '/'
+      throw err
+    }
+  },
 
-    async handleRateLimit(
-        this: any,
-        err: any,
-        retryCallback: () => Promise<any>
-    ) {
-        if (err?.response?.data?.message === "You are being rate limited.") {
-            const retryAfter = err.response.data.retry_after || 1;
-            setTimeout(retryCallback, retryAfter * 1300);
-        }
-    },
+  async handleRateLimit(this: any, err: any, retryCallback: () => Promise<any>) {
+    if (err?.response?.data?.message === 'You are being rate limited.') {
+      const retryAfter = err.response.data.retry_after || 1
+      setTimeout(retryCallback, retryAfter * 1300)
+    }
+  },
 
-    handleUnauthorized() {
-        if (!window.location.pathname.includes("/auth/logout"))
-            location.href = "/auth/logout";
-    },
-};
+  handleUnauthorized() {
+    ; (this as any)._isLogin = false
+      ; (this as any).getters._getUser = null
+
+    const userData = JSON.parse(localStorage.getItem('user_data') ?? '{}')
+    delete userData.access_token
+
+    localStorage.setItem('user_data', JSON.stringify(userData))
+  }
+}

@@ -1,16 +1,24 @@
 {
-    "mongo_url": "mongodb://localhost:27017",
-    "default_avatar_url": "https://p4b-forum.b-cdn.net/1715860872107-c9f4433b171db3ae2494962bfd0284a0-default_avatar.png",
+    "mongoose_url": "mongodb://localhost:27017/project",
+    "client": {
+        "default_avatar": "1t_avatar"
+    },
     "server": {
         "port": 5000
     },
     "nodemailer": {
-        "user": ",,,",
-        "pass": ",,,"
+        "user": "gmail.com",
+        "pass": "zhohsl"
     },
     "bunny": {
-        "storage_name": ",,,",
-        "host_name": ",,,",
-        "access_key": ",,,"
+        "storage_name": "pum",
+        "host_name": "p.net",
+        "access_key": "d86"
+    },
+    "discord": {
+        "token": "MTE1NDA3MjAA",
+        "redirect_uri": "http://localhost:3000/connection?type=discord",
+        "client_id": "1154072030388428923",
+        "client_secret": "amluwYTjMSFbO"
     }
 }
